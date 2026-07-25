@@ -41,8 +41,9 @@
     ]
   },
   "services": {
-    "title": "Our Services",
-    "subtitle": "From your first visit to picking up your glasses, we make your experience with us easy and clear",
+    "eyebrow": "Our Services",
+    "title": "Complete eye care that meets all your needs",
+    "subtitle": "We offer you a unique experience that combines medical diagnostic precision with the latest modern products to ensure the health and safety of your eyes at the highest standards.",
     "cta": "Learn more"
   },
   "brandsSection": {
