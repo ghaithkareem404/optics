@@ -1,0 +1,128 @@
+{
+  "brand": {
+    "name": "Zando Optics",
+    "shortName": "Z&O",
+    "tagline": "Clearer vision, finer style"
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "services": "Services",
+    "about": "About",
+    "contact": "Contact",
+    "book": "Book an Eye Exam"
+  },
+  "hero": {
+    "eyebrow": "Official OptiSwiss lens agent in Iraq",
+    "title": "Luxury eyewear & world-class eye exams",
+    "subtitle": "Discover our collection of authentic international brands, backed by precise eye examinations and premium Swiss lenses — all in one place in the heart of Baghdad.",
+    "ctaPrimary": "Browse products",
+    "ctaSecondary": "Book an appointment",
+    "stat1": "Global brands",
+    "stat1Label": "authentic & guaranteed",
+    "stat2": "Years of experience",
+    "stat2Label": "serving our clients",
+    "stat3": "Happy clients",
+    "stat3Label": "who trust us"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Complete eye care — from examination to the perfect pair of glasses",
+    "cta": "Learn more"
+  },
+  "brandsSection": {
+    "title": "Authentic global brands",
+    "subtitle": "We bring you the finest international labels with guaranteed authenticity"
+  },
+  "products": {
+    "title": "Our Products",
+    "subtitle": "A wide range of prescription glasses, sunglasses and contact lenses",
+    "featuredTitle": "Featured picks",
+    "featuredSubtitle": "Carefully selected pieces from our latest collections",
+    "viewAll": "View all products",
+    "categoriesTitle": "Shop by category",
+    "from": "From",
+    "currency": "IQD",
+    "inquire": "Inquire now",
+    "allCategories": "All",
+    "categories": {
+      "optical": "Optical glasses",
+      "sunglasses": "Sunglasses",
+      "contact-lenses": "Contact lenses",
+      "accessories": "Accessories"
+    }
+  },
+  "whyUs": {
+    "title": "Why Zando Optics?",
+    "subtitle": "We combine expertise, technology and authenticity for the best experience",
+    "items": [
+      {
+        "title": "Guaranteed authenticity",
+        "description": "All our products are 100% authentic from certified agents with an official warranty."
+      },
+      {
+        "title": "Advanced eye exams",
+        "description": "Modern equipment and precise, world-standard examinations by specialists."
+      },
+      {
+        "title": "Swiss lenses",
+        "description": "Official agent for OptiSwiss high-clarity, durable lenses."
+      },
+      {
+        "title": "Premium service",
+        "description": "Personal consultation to pick the frame that best fits your face and lifestyle."
+      }
+    ]
+  },
+  "testimonials": {
+    "title": "What our clients say",
+    "subtitle": "Our clients' trust is our most valuable asset"
+  },
+  "cta": {
+    "title": "Ready for a clearer view?",
+    "subtitle": "Book your eye exam today or visit our showroom to pick your perfect pair.",
+    "button": "Book now",
+    "call": "Call us"
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "Our story in serving your eyes",
+    "body": "Zando Optics (Z & O Optics) is a specialized store in Baghdad offering prescription glasses, sunglasses and contact lenses from the finest authentic international brands. We are proud to be the official agent for Swiss OptiSwiss lenses in Iraq, and we are committed to providing precise, world-standard eye examinations by a select team of specialists. Our mission is to give every client clearer vision and finer style.",
+    "missionTitle": "Our Mission",
+    "mission": "To be Iraq's leading optics destination in quality, authenticity and service.",
+    "visionTitle": "Our Vision",
+    "vision": "To spread a culture of eye-health care and provide the latest optical solutions to every client."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We're happy to help — visit or message us anytime",
+    "addressLabel": "Address",
+    "address": "Baghdad, Iraq",
+    "phoneLabel": "Phone",
+    "phone": "+964 000 000 0000",
+    "emailLabel": "Email",
+    "email": "info@zandooptics.com",
+    "hoursLabel": "Working hours",
+    "hours": "Sat - Thu: 10 AM - 10 PM",
+    "formName": "Name",
+    "formEmail": "Email",
+    "formPhone": "Phone number",
+    "formMessage": "Your message",
+    "formSubmit": "Send",
+    "formSuccess": "Thank you! Your message has been received (demo form).",
+    "formNote": "* This is a demo form — it can be connected to an email service or booking system later.",
+    "followUs": "Follow us"
+  },
+  "footer": {
+    "about": "A specialized eyewear & optics store in Baghdad. Authenticity, quality, and a clearer view.",
+    "quickLinks": "Quick links",
+    "contactTitle": "Contact info",
+    "rights": "All rights reserved",
+    "madeWith": "Crafted with care"
+  },
+  "common": {
+    "menu": "Menu",
+    "close": "Close",
+    "backHome": "Back to home"
+  }
+}

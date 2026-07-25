@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-sans: system-ui, -apple-system, "Segoe UI", Tahoma, "Helvetica Neue",
+      Arial, "Noto Sans Arabic", sans-serif;
+    --font-display: "Georgia", "Times New Roman", serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-ink antialiased;
+    font-family: var(--font-sans);
+  }
+
+  /* Logical scroll gutter so RTL/LTR both behave. */
+  ::selection {
+    @apply bg-gold/30 text-ink;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
