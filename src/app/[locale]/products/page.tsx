@@ -5,7 +5,11 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { products } from "@/data/products";
 import { PageHeader } from "@/components/PageHeader";
 import { ProductsGrid } from "@/components/ProductsGrid";
+import { BrandGalleries } from "@/components/BrandGalleries";
 import { Container } from "@/components/ui";
+
+// Always render fresh so newly uploaded model images appear immediately.
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -29,16 +33,15 @@ export default async function ProductsPage({ params }: { params: { locale: strin
           <ProductsGrid
             products={products}
             locale={params.locale}
-            labels={{
-              from: dict.products.from,
-              currency: dict.products.currency,
-              inquire: dict.products.inquire,
-              all: dict.products.allCategories,
-            }}
+            labels={{ inquire: dict.products.inquire, all: dict.products.allCategories }}
             categoryLabels={dict.products.categories}
           />
         </Container>
       </section>
+      <BrandGalleries
+        locale={params.locale}
+        title={params.locale === "ar" ? "أحدث الموديلات حسب البراند" : "Latest models by brand"}
+      />
     </>
   );
 }
