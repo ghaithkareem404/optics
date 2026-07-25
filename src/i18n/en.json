@@ -1,0 +1,154 @@
+{
+  "brand": {
+    "name": "Z&O Optics",
+    "shortName": "Z&O",
+    "tagline": "Medical precision & modern elegance in one place"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "products": "Products",
+    "optical": "Optical Lenses",
+    "contactLenses": "Contact Lenses",
+    "brands": "Brands",
+    "accessories": "Accessories",
+    "contact": "Contact",
+    "book": "Book an Eye Exam",
+    "shop": "Shop now"
+  },
+  "hero": {
+    "eyebrow": "Z&O Optics — Baghdad, Al-Harthiya",
+    "slides": [
+      {
+        "title": "Z&O Optics",
+        "text": "Where vision meets distinction. We offer a complete optical experience blending medical precision with modern elegance, plus a wide range of the latest authentic global brands.",
+        "cta": "More about us",
+        "href": "about"
+      },
+      {
+        "title": "Your clear vision is our first priority",
+        "text": "Clear vision starts with your trust, so we put you first. Get the most precise eye exam with the latest technology by a team of specialists.",
+        "cta": "Our services",
+        "href": "services"
+      },
+      {
+        "title": "The latest authentic global brands",
+        "text": "Discover the latest collections of sunglasses, optical frames and contact lenses from the world's most famous brands, with exclusive designs that highlight your personality.",
+        "cta": "Browse products",
+        "href": "products"
+      }
+    ]
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "From your first visit to picking up your glasses, we make your experience with us easy and clear",
+    "cta": "Learn more"
+  },
+  "brandsSection": {
+    "title": "Leading global brands",
+    "subtitle": "World-class quality we trust — official agents for the most renowned eyewear and lens brands"
+  },
+  "products": {
+    "title": "Our Products",
+    "subtitle": "Discover the latest sunglasses and optical collections from the world's most famous brands",
+    "featuredTitle": "Selected collection",
+    "featuredSubtitle": "Carefully chosen pieces that suit your taste and highlight your unique personality",
+    "viewAll": "Browse shop",
+    "categoriesTitle": "Shop by category",
+    "from": "From",
+    "currency": "IQD",
+    "inquire": "Inquire now",
+    "allCategories": "All",
+    "categories": {
+      "optical": "Optical lenses",
+      "sunglasses": "Sunglasses",
+      "contact-lenses": "Contact lenses",
+      "accessories": "Accessories"
+    }
+  },
+  "about": {
+    "title": "Z&O Optics Center",
+    "subtitle": "Medical precision & modern elegance in one place",
+    "body": "At Z & O Optics, we don't just offer you an eye exam — we offer a complete optical experience that blends medical precision with modern elegance. We are a specialized center and official agents for the most renowned international brands in optical glasses, sunglasses and contact lenses. Our team of specialist optometrists uses the latest equipment to ensure measurement accuracy and reliable results. We put you first — from exam precision, through authentic product quality, to after-sales service that guarantees your complete satisfaction.",
+    "missionTitle": "Our Mission",
+    "mission": "To give every client clearer vision and finer style through a complete, trusted optical service.",
+    "visionTitle": "Our Vision",
+    "vision": "To be Iraq's leading optics destination in medical precision, authenticity and elegance."
+  },
+  "whyUs": {
+    "title": "Why Z&O Optics?",
+    "subtitle": "Because clear vision starts with the fine details, and you deserve the best",
+    "items": [
+      {
+        "title": "Precise exams & advanced tech",
+        "description": "The latest equipment for measurement accuracy and reliable results every time."
+      },
+      {
+        "title": "Specialist optometrists",
+        "description": "A team of specialist eye examiners with you at every step."
+      },
+      {
+        "title": "Authentic global brands",
+        "description": "Official agents for the most renowned international brands with guaranteed authenticity."
+      },
+      {
+        "title": "Full guidance in choosing",
+        "description": "We help you pick the frame that best suits your features and lifestyle."
+      },
+      {
+        "title": "After-sales follow-up & warranty",
+        "description": "After-sales service that ensures your comfort and complete satisfaction."
+      },
+      {
+        "title": "Prime location, long hours",
+        "description": "In the heart of Al-Harthiya, Baghdad, open from 9 AM to 12 midnight."
+      }
+    ]
+  },
+  "testimonials": {
+    "title": "What our clients say",
+    "subtitle": "Our clients' trust is our most valuable asset"
+  },
+  "cta": {
+    "title": "Have a question?",
+    "subtitle": "Let our specialist team help you choose what suits you. Call us or visit one of our two branches in Al-Harthiya.",
+    "button": "Contact us",
+    "call": "Call now"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Have a question? We're happy to help — visit or message us anytime",
+    "addressLabel": "Address",
+    "address": "Iraq - Baghdad - Al-Harthiya - Al-Kindi Street",
+    "branch2Label": "Second branch",
+    "branch2": "Baghdad - Al-Harthiya - opposite Baghdad Mall",
+    "phoneLabel": "Phone",
+    "phone": "+964 780 868 6000",
+    "emailLabel": "Email",
+    "email": "info@zandooptics.com",
+    "hoursLabel": "Working hours",
+    "hours": "From 9 AM to 12 midnight",
+    "formName": "Name",
+    "formEmail": "Email",
+    "formPhone": "Phone number",
+    "formMessage": "Your message",
+    "formSubmit": "Send now",
+    "formSuccess": "Thank you! Your message has been received (demo form).",
+    "formNote": "* This is a demo form — it can be connected to an email service or booking system later.",
+    "followUs": "Follow us on"
+  },
+  "footer": {
+    "about": "A specialized optics center in Baghdad - Al-Harthiya, blending medical precision with modern elegance. Official agents for the most renowned international brands.",
+    "quickLinks": "Quick links",
+    "servicesTitle": "Our Services",
+    "contactTitle": "Contact us",
+    "rights": "All rights reserved",
+    "madeWith": "Copyright by Z&O Optics"
+  },
+  "common": {
+    "menu": "Menu",
+    "close": "Close",
+    "backHome": "Back to home"
+  }
+}
