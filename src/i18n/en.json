@@ -19,16 +19,26 @@
   },
   "hero": {
     "eyebrow": "Z&O Optics — Baghdad, Al-Harthiya",
-    "title": "Your clear vision is our first priority",
-    "subtitle": "Clear vision starts with your trust, so we put you first. Discover our luxury collections of eyewear and lenses, and get the most precise eye exam with the latest technology.",
-    "ctaPrimary": "Our services",
-    "ctaSecondary": "Contact us",
-    "stat1": "Global brands",
-    "stat1Label": "authentic & certified",
-    "stat2": "Daily hours",
-    "stat2Label": "9 AM - 12 midnight",
-    "stat3": "Two branches",
-    "stat3Label": "in Al-Harthiya, Baghdad"
+    "slides": [
+      {
+        "title": "Z&O Optics",
+        "text": "Where vision meets distinction. We offer a complete optical experience blending medical precision with modern elegance, plus a wide range of the latest authentic global brands.",
+        "cta": "More about us",
+        "href": "about"
+      },
+      {
+        "title": "Your clear vision is our first priority",
+        "text": "Clear vision starts with your trust, so we put you first. Get the most precise eye exam with the latest technology by a team of specialists.",
+        "cta": "Our services",
+        "href": "services"
+      },
+      {
+        "title": "The latest authentic global brands",
+        "text": "Discover the latest collections of sunglasses, optical frames and contact lenses from the world's most famous brands, with exclusive designs that highlight your personality.",
+        "cta": "Browse products",
+        "href": "products"
+      }
+    ]
   },
   "services": {
     "title": "Our Services",
