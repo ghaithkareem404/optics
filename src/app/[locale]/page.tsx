@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { HeroVideo } from "@/components/HeroVideo";
-import { ServicesSection } from "@/components/ServicesSection";
 import { FeaturedProducts } from "@/components/FeaturedProducts";
 import { BrandStrip } from "@/components/BrandStrip";
 import { WhyChooseUs } from "@/components/WhyChooseUs";
@@ -16,7 +15,6 @@ export default async function HomePage({ params }: { params: { locale: string } 
   return (
     <>
       <HeroVideo locale={params.locale} dict={dict} />
-      <ServicesSection locale={params.locale} dict={dict} />
       <FeaturedProducts locale={params.locale} dict={dict} />
       <BrandStrip locale={params.locale} dict={dict} />
       <WhyChooseUs dict={dict} />
