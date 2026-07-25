@@ -26,9 +26,16 @@ export interface Product {
 
 export interface Brand {
   id: string;
+  /** Brand name (kept latin so it reads the same in both languages). */
   name: string;
-  /** Single line of copy shown under the brand name. */
+  /** Localized short label shown under the name in the compact strip. */
   note: Localized;
+  /** Longer description used in the featured-brands cards. */
+  description?: Localized;
+  /** Accent color for the placeholder card art. */
+  accent?: string;
+  /** Include in the large "featured brands" section. */
+  featured?: boolean;
 }
 
 export interface Service {

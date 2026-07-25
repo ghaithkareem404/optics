@@ -15,26 +15,31 @@ const config: Config = {
     },
     extend: {
       colors: {
-        // Deep, premium optics palette: midnight navy + warm gold accent.
+        // Brand palette taken from zandooptics.com: warm gold + soft teal + mint on near-black.
         ink: {
-          DEFAULT: "#0d1b2a",
-          soft: "#1b263b",
-          muted: "#415a77",
+          DEFAULT: "#0e0e0e",
+          soft: "#2b2b2b",
+          muted: "#6b6b6b",
         },
         gold: {
-          DEFAULT: "#c8a24a",
-          light: "#e0c375",
-          dark: "#a3822f",
+          DEFAULT: "#caaa70",
+          light: "#ddc79a",
+          dark: "#a9884e",
         },
-        cream: "#f7f4ee",
+        teal: {
+          DEFAULT: "#1accbf",
+          dark: "#14a79c",
+        },
+        // Reused everywhere as the light section background (the site's mint tint).
+        cream: "#ecf3f2",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         display: ["var(--font-display)", "Georgia", "serif"],
       },
       boxShadow: {
-        card: "0 10px 30px -12px rgba(13, 27, 42, 0.25)",
-        "card-hover": "0 18px 45px -12px rgba(13, 27, 42, 0.35)",
+        card: "0 10px 30px -14px rgba(20, 167, 156, 0.18)",
+        "card-hover": "0 18px 45px -14px rgba(202, 170, 112, 0.30)",
       },
       keyframes: {
         "fade-up": {

@@ -1,8 +1,8 @@
 import type { Dictionary } from "@/i18n/dictionaries";
-import { SectionTitle, Container } from "./ui";
-import { ShieldIcon, EyeIcon, LensIcon, SparkleIcon } from "./Icons";
+import { Container } from "./ui";
+import { EyeIcon, ShieldIcon, GlassesIcon, SparkleIcon, LensIcon, ClockIcon } from "./Icons";
 
-const icons = [ShieldIcon, EyeIcon, LensIcon, SparkleIcon];
+const icons = [EyeIcon, ShieldIcon, GlassesIcon, SparkleIcon, LensIcon, ClockIcon];
 
 export function WhyChooseUs({ dict }: { dict: Dictionary }) {
   return (
@@ -15,7 +15,7 @@ export function WhyChooseUs({ dict }: { dict: Dictionary }) {
           <h2 className="font-display text-3xl font-bold sm:text-4xl">{dict.whyUs.title}</h2>
           <p className="mt-3 text-white/70">{dict.whyUs.subtitle}</p>
         </div>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {dict.whyUs.items.map((item, i) => {
             const Icon = icons[i] ?? ShieldIcon;
             return (

@@ -25,6 +25,7 @@ export default async function ContactPage({ params }: { params: { locale: string
 
   const info = [
     { icon: MapPinIcon, label: c.addressLabel, value: c.address, dir: undefined },
+    { icon: MapPinIcon, label: c.branch2Label, value: c.branch2, dir: undefined },
     { icon: PhoneIcon, label: c.phoneLabel, value: c.phone, dir: "ltr" as const },
     { icon: MailIcon, label: c.emailLabel, value: c.email, dir: "ltr" as const },
     { icon: ClockIcon, label: c.hoursLabel, value: c.hours, dir: undefined },

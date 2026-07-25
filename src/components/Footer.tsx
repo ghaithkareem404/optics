@@ -3,7 +3,7 @@ import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { Container } from "./ui";
 import { Logo } from "./Logo";
-import { MapPinIcon, PhoneIcon, MailIcon } from "./Icons";
+import { MapPinIcon, PhoneIcon, MailIcon, ClockIcon } from "./Icons";
 import { socialLinks } from "@/data/social";
 
 export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
@@ -46,17 +46,26 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             {dict.footer.contactTitle}
           </h3>
           <ul className="mt-4 space-y-3 text-sm text-white/70">
-            <li className="flex items-center gap-2">
-              <MapPinIcon className="h-4 w-4 shrink-0 text-gold" />
-              {dict.contact.address}
+            <li className="flex items-start gap-2">
+              <MapPinIcon className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+              <span>
+                {dict.contact.address}
+                <span className="block text-white/45">{dict.contact.branch2}</span>
+              </span>
             </li>
             <li className="flex items-center gap-2">
               <PhoneIcon className="h-4 w-4 shrink-0 text-gold" />
-              <span dir="ltr">{dict.contact.phone}</span>
+              <a href={`tel:${dict.contact.phone.replace(/\s+/g, "")}`} dir="ltr" className="transition-colors hover:text-gold-light">
+                {dict.contact.phone}
+              </a>
             </li>
             <li className="flex items-center gap-2">
               <MailIcon className="h-4 w-4 shrink-0 text-gold" />
               {dict.contact.email}
+            </li>
+            <li className="flex items-center gap-2">
+              <ClockIcon className="h-4 w-4 shrink-0 text-gold" />
+              {dict.contact.hours}
             </li>
           </ul>
         </div>
@@ -85,9 +94,9 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       <div className="border-t border-white/10">
         <Container className="flex flex-col items-center justify-between gap-2 py-6 text-xs text-white/50 sm:flex-row">
           <p>
-            © {new Date().getFullYear()} {dict.brand.name}. {dict.footer.rights}.
+            {dict.footer.madeWith}. {dict.footer.rights}. © {new Date().getFullYear()}
           </p>
-          <p>{dict.footer.madeWith} · Next.js + TypeScript</p>
+          <p>Next.js + TypeScript</p>
         </Container>
       </div>
     </footer>

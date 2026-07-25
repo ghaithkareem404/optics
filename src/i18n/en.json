@@ -1,76 +1,98 @@
 {
   "brand": {
-    "name": "Zando Optics",
+    "name": "Z&O Optics",
     "shortName": "Z&O",
-    "tagline": "Clearer vision, finer style"
+    "tagline": "Medical precision & modern elegance in one place"
   },
   "nav": {
     "home": "Home",
-    "products": "Products",
-    "services": "Services",
     "about": "About",
+    "services": "Services",
+    "products": "Products",
+    "optical": "Optical Lenses",
+    "contactLenses": "Contact Lenses",
+    "brands": "Brands",
+    "accessories": "Accessories",
     "contact": "Contact",
-    "book": "Book an Eye Exam"
+    "book": "Book an Eye Exam",
+    "shop": "Shop now"
   },
   "hero": {
-    "eyebrow": "Official OptiSwiss lens agent in Iraq",
-    "title": "Luxury eyewear & world-class eye exams",
-    "subtitle": "Discover our collection of authentic international brands, backed by precise eye examinations and premium Swiss lenses — all in one place in the heart of Baghdad.",
-    "ctaPrimary": "Browse products",
-    "ctaSecondary": "Book an appointment",
+    "eyebrow": "Z&O Optics — Baghdad, Al-Harthiya",
+    "title": "Your clear vision is our first priority",
+    "subtitle": "Clear vision starts with your trust, so we put you first. Discover our luxury collections of eyewear and lenses, and get the most precise eye exam with the latest technology.",
+    "ctaPrimary": "Our services",
+    "ctaSecondary": "Contact us",
     "stat1": "Global brands",
-    "stat1Label": "authentic & guaranteed",
-    "stat2": "Years of experience",
-    "stat2Label": "serving our clients",
-    "stat3": "Happy clients",
-    "stat3Label": "who trust us"
+    "stat1Label": "authentic & certified",
+    "stat2": "Daily hours",
+    "stat2Label": "9 AM - 12 midnight",
+    "stat3": "Two branches",
+    "stat3Label": "in Al-Harthiya, Baghdad"
   },
   "services": {
     "title": "Our Services",
-    "subtitle": "Complete eye care — from examination to the perfect pair of glasses",
+    "subtitle": "From your first visit to picking up your glasses, we make your experience with us easy and clear",
     "cta": "Learn more"
   },
   "brandsSection": {
-    "title": "Authentic global brands",
-    "subtitle": "We bring you the finest international labels with guaranteed authenticity"
+    "title": "Leading global brands",
+    "subtitle": "World-class quality we trust — official agents for the most renowned eyewear and lens brands"
   },
   "products": {
     "title": "Our Products",
-    "subtitle": "A wide range of prescription glasses, sunglasses and contact lenses",
-    "featuredTitle": "Featured picks",
-    "featuredSubtitle": "Carefully selected pieces from our latest collections",
-    "viewAll": "View all products",
+    "subtitle": "Discover the latest sunglasses and optical collections from the world's most famous brands",
+    "featuredTitle": "Selected collection",
+    "featuredSubtitle": "Carefully chosen pieces that suit your taste and highlight your unique personality",
+    "viewAll": "Browse shop",
     "categoriesTitle": "Shop by category",
     "from": "From",
     "currency": "IQD",
     "inquire": "Inquire now",
     "allCategories": "All",
     "categories": {
-      "optical": "Optical glasses",
+      "optical": "Optical lenses",
       "sunglasses": "Sunglasses",
       "contact-lenses": "Contact lenses",
       "accessories": "Accessories"
     }
   },
+  "about": {
+    "title": "Z&O Optics Center",
+    "subtitle": "Medical precision & modern elegance in one place",
+    "body": "At Z & O Optics, we don't just offer you an eye exam — we offer a complete optical experience that blends medical precision with modern elegance. We are a specialized center and official agents for the most renowned international brands in optical glasses, sunglasses and contact lenses. Our team of specialist optometrists uses the latest equipment to ensure measurement accuracy and reliable results. We put you first — from exam precision, through authentic product quality, to after-sales service that guarantees your complete satisfaction.",
+    "missionTitle": "Our Mission",
+    "mission": "To give every client clearer vision and finer style through a complete, trusted optical service.",
+    "visionTitle": "Our Vision",
+    "vision": "To be Iraq's leading optics destination in medical precision, authenticity and elegance."
+  },
   "whyUs": {
-    "title": "Why Zando Optics?",
-    "subtitle": "We combine expertise, technology and authenticity for the best experience",
+    "title": "Why Z&O Optics?",
+    "subtitle": "Because clear vision starts with the fine details, and you deserve the best",
     "items": [
       {
-        "title": "Guaranteed authenticity",
-        "description": "All our products are 100% authentic from certified agents with an official warranty."
+        "title": "Precise exams & advanced tech",
+        "description": "The latest equipment for measurement accuracy and reliable results every time."
       },
       {
-        "title": "Advanced eye exams",
-        "description": "Modern equipment and precise, world-standard examinations by specialists."
+        "title": "Specialist optometrists",
+        "description": "A team of specialist eye examiners with you at every step."
       },
       {
-        "title": "Swiss lenses",
-        "description": "Official agent for OptiSwiss high-clarity, durable lenses."
+        "title": "Authentic global brands",
+        "description": "Official agents for the most renowned international brands with guaranteed authenticity."
       },
       {
-        "title": "Premium service",
-        "description": "Personal consultation to pick the frame that best fits your face and lifestyle."
+        "title": "Full guidance in choosing",
+        "description": "We help you pick the frame that best suits your features and lifestyle."
+      },
+      {
+        "title": "After-sales follow-up & warranty",
+        "description": "After-sales service that ensures your comfort and complete satisfaction."
+      },
+      {
+        "title": "Prime location, long hours",
+        "description": "In the heart of Al-Harthiya, Baghdad, open from 9 AM to 12 midnight."
       }
     ]
   },
@@ -79,46 +101,40 @@
     "subtitle": "Our clients' trust is our most valuable asset"
   },
   "cta": {
-    "title": "Ready for a clearer view?",
-    "subtitle": "Book your eye exam today or visit our showroom to pick your perfect pair.",
-    "button": "Book now",
-    "call": "Call us"
-  },
-  "about": {
-    "title": "About Us",
-    "subtitle": "Our story in serving your eyes",
-    "body": "Zando Optics (Z & O Optics) is a specialized store in Baghdad offering prescription glasses, sunglasses and contact lenses from the finest authentic international brands. We are proud to be the official agent for Swiss OptiSwiss lenses in Iraq, and we are committed to providing precise, world-standard eye examinations by a select team of specialists. Our mission is to give every client clearer vision and finer style.",
-    "missionTitle": "Our Mission",
-    "mission": "To be Iraq's leading optics destination in quality, authenticity and service.",
-    "visionTitle": "Our Vision",
-    "vision": "To spread a culture of eye-health care and provide the latest optical solutions to every client."
+    "title": "Have a question?",
+    "subtitle": "Let our specialist team help you choose what suits you. Call us or visit one of our two branches in Al-Harthiya.",
+    "button": "Contact us",
+    "call": "Call now"
   },
   "contact": {
     "title": "Contact Us",
-    "subtitle": "We're happy to help — visit or message us anytime",
+    "subtitle": "Have a question? We're happy to help — visit or message us anytime",
     "addressLabel": "Address",
-    "address": "Baghdad, Iraq",
+    "address": "Iraq - Baghdad - Al-Harthiya - Al-Kindi Street",
+    "branch2Label": "Second branch",
+    "branch2": "Baghdad - Al-Harthiya - opposite Baghdad Mall",
     "phoneLabel": "Phone",
-    "phone": "+964 000 000 0000",
+    "phone": "+964 780 868 6000",
     "emailLabel": "Email",
     "email": "info@zandooptics.com",
     "hoursLabel": "Working hours",
-    "hours": "Sat - Thu: 10 AM - 10 PM",
+    "hours": "From 9 AM to 12 midnight",
     "formName": "Name",
     "formEmail": "Email",
     "formPhone": "Phone number",
     "formMessage": "Your message",
-    "formSubmit": "Send",
+    "formSubmit": "Send now",
     "formSuccess": "Thank you! Your message has been received (demo form).",
     "formNote": "* This is a demo form — it can be connected to an email service or booking system later.",
-    "followUs": "Follow us"
+    "followUs": "Follow us on"
   },
   "footer": {
-    "about": "A specialized eyewear & optics store in Baghdad. Authenticity, quality, and a clearer view.",
+    "about": "A specialized optics center in Baghdad - Al-Harthiya, blending medical precision with modern elegance. Official agents for the most renowned international brands.",
     "quickLinks": "Quick links",
-    "contactTitle": "Contact info",
+    "servicesTitle": "Our Services",
+    "contactTitle": "Contact us",
     "rights": "All rights reserved",
-    "madeWith": "Crafted with care"
+    "madeWith": "Copyright by Z&O Optics"
   },
   "common": {
     "menu": "Menu",
