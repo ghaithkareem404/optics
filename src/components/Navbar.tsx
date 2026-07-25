@@ -10,30 +10,34 @@ import { Logo } from "./Logo";
 
 interface NavDict {
   home: string;
-  products: string;
-  services: string;
   about: string;
+  services: string;
+  optical: string;
+  contactLenses: string;
+  brands: string;
+  accessories: string;
   contact: string;
-  book: string;
 }
 
 export function Navbar({
   locale,
   nav,
-  brandName,
 }: {
   locale: Locale;
   nav: NavDict;
-  brandName: string;
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
+  // Full menu mirroring zandooptics.com (right-to-left order).
   const links = [
     { href: `/${locale}`, label: nav.home },
-    { href: `/${locale}/products`, label: nav.products },
-    { href: `/${locale}/services`, label: nav.services },
     { href: `/${locale}/about`, label: nav.about },
+    { href: `/${locale}/services`, label: nav.services },
+    { href: `/${locale}/products`, label: nav.optical },
+    { href: `/${locale}/products`, label: nav.contactLenses },
+    { href: `/${locale}/products`, label: nav.brands },
+    { href: `/${locale}/products`, label: nav.accessories },
     { href: `/${locale}/contact`, label: nav.contact },
   ];
 
@@ -41,27 +45,36 @@ export function Navbar({
   const switchedPath =
     pathname.replace(new RegExp(`^/${locale}`), `/${otherLocale}`) || `/${otherLocale}`;
 
-  const isActive = (href: string) =>
-    href === `/${locale}` ? pathname === href : pathname.startsWith(href);
+  const isActive = (href: string, i: number) =>
+    i === 0 ? pathname === href : pathname === href;
+
+  const brandSub = locale === "ar" ? "للبصريات" : "Optics";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-ink/5 bg-white/90 backdrop-blur">
-      <nav className="container flex h-16 items-center justify-between gap-4">
-        <Link href={`/${locale}`} className="flex items-center gap-2" onClick={() => setOpen(false)}>
-          <Logo className="h-9 w-9 text-gold" />
-          <span className="font-display text-lg font-bold text-ink">{brandName}</span>
+    <header className="sticky top-0 z-50 bg-ink text-white shadow-lg">
+      <nav className="container flex h-20 items-center justify-between gap-4">
+        {/* Brand (right in RTL) */}
+        <Link
+          href={`/${locale}`}
+          className="flex items-center gap-2 shrink-0"
+          onClick={() => setOpen(false)}
+        >
+          <Logo className="h-10 w-14 text-gold" />
+          <span className="leading-none">
+            <span className="block font-display text-xl font-bold tracking-wide text-white">Z&amp;O</span>
+            <span className="block text-[11px] tracking-widest text-gold-light">{brandSub}</span>
+          </span>
         </Link>
 
-        <ul className="hidden items-center gap-1 lg:flex">
-          {links.map((link) => (
-            <li key={link.href}>
+        {/* Menu (center) */}
+        <ul className="hidden items-center gap-1 xl:flex">
+          {links.map((link, i) => (
+            <li key={link.label}>
               <Link
                 href={link.href}
                 className={cn(
-                  "rounded-full px-4 py-2 text-sm font-medium transition-colors",
-                  isActive(link.href)
-                    ? "text-gold-dark"
-                    : "text-ink-muted hover:text-ink",
+                  "rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                  isActive(link.href, i) ? "text-gold" : "text-white/85 hover:text-gold-light",
                 )}
               >
                 {link.label}
@@ -70,28 +83,37 @@ export function Navbar({
           ))}
         </ul>
 
-        <div className="flex items-center gap-2">
+        {/* Actions (left) */}
+        <div className="flex items-center gap-3">
           <Link
             href={switchedPath}
-            className="rounded-full border border-ink/15 px-3 py-1.5 text-sm font-medium text-ink transition-colors hover:border-gold hover:text-gold-dark"
+            className="hidden items-center gap-1 text-sm font-medium text-white/85 transition-colors hover:text-gold-light sm:flex"
             aria-label="Switch language"
           >
-            {localeLabel[otherLocale]}
+            {localeLabel[locale]}
+            <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </Link>
-          <Link
-            href={`/${locale}/contact`}
-            className="hidden rounded-full bg-gold px-4 py-2 text-sm font-semibold text-ink transition-colors hover:bg-gold-dark hover:text-white sm:inline-block"
+
+          <button
+            type="button"
+            aria-label="Search"
+            className="hidden h-11 w-11 items-center justify-center rounded-full bg-gold text-ink transition-colors hover:bg-gold-light sm:inline-flex"
           >
-            {nav.book}
-          </Link>
+            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" strokeLinecap="round" />
+            </svg>
+          </button>
+
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-ink/15 text-ink lg:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white xl:hidden"
             aria-label="Menu"
             aria-expanded={open}
           >
-            <span className="sr-only">Menu</span>
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
               {open ? (
                 <path d="M6 6l12 12M18 6 6 18" strokeLinecap="round" />
@@ -103,17 +125,18 @@ export function Navbar({
         </div>
       </nav>
 
+      {/* Mobile menu */}
       {open ? (
-        <div className="border-t border-ink/5 bg-white lg:hidden">
+        <div className="border-t border-white/10 bg-ink xl:hidden">
           <ul className="container flex flex-col py-3">
-            {links.map((link) => (
-              <li key={link.href}>
+            {links.map((link, i) => (
+              <li key={link.label}>
                 <Link
                   href={link.href}
                   onClick={() => setOpen(false)}
                   className={cn(
                     "block rounded-lg px-3 py-2.5 text-sm font-medium",
-                    isActive(link.href) ? "bg-cream text-gold-dark" : "text-ink-muted",
+                    isActive(link.href, i) ? "text-gold" : "text-white/85",
                   )}
                 >
                   {link.label}
@@ -122,11 +145,11 @@ export function Navbar({
             ))}
             <li>
               <Link
-                href={`/${locale}/contact`}
+                href={switchedPath}
                 onClick={() => setOpen(false)}
-                className="mt-2 block rounded-lg bg-gold px-3 py-2.5 text-center text-sm font-semibold text-ink"
+                className="mt-1 block rounded-lg px-3 py-2.5 text-sm font-medium text-gold-light"
               >
-                {nav.book}
+                {localeLabel[otherLocale]}
               </Link>
             </li>
           </ul>

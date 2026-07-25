@@ -47,7 +47,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} dir={localeDirection[locale]}>
       <body className="flex min-h-screen flex-col">
-        <Navbar locale={locale} nav={dict.nav} brandName={dict.brand.shortName + " Optics"} />
+        <Navbar locale={locale} nav={dict.nav} />
         <main className="flex-1">{children}</main>
         <Footer locale={locale} dict={dict} />
       </body>

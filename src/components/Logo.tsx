@@ -1,23 +1,17 @@
 import type { SVGProps } from "react";
 
-/** Z&O monogram formed from two lenses — the brand mark. */
+/** Z&O eye monogram — a stylised eye, matching the brand mark on zandooptics.com. */
 export function Logo(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg viewBox="0 0 48 48" fill="none" {...props}>
-      <circle cx="16" cy="26" r="10" stroke="currentColor" strokeWidth="3" />
-      <circle cx="34" cy="22" r="8" stroke="currentColor" strokeWidth="3" />
+    <svg viewBox="0 0 72 48" fill="none" {...props}>
       <path
-        d="M24.5 25.5c1-2 4-2.5 5.5-1"
+        d="M6 24C6 24 18 9 36 9s30 15 30 15-12 15-30 15S6 24 6 24Z"
         stroke="currentColor"
         strokeWidth="3"
-        strokeLinecap="round"
+        strokeLinejoin="round"
       />
-      <path
-        d="M6.5 22 10 15M41.5 16 44 11"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
+      <circle cx="36" cy="24" r="8.5" stroke="currentColor" strokeWidth="3" />
+      <circle cx="36" cy="24" r="2.6" fill="currentColor" />
     </svg>
   );
 }
