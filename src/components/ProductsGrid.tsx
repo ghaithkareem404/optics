@@ -16,7 +16,7 @@ export function ProductsGrid({
 }: {
   products: Product[];
   locale: Locale;
-  labels: { from: string; currency: string; inquire: string; all: string };
+  labels: { inquire: string; all: string };
   categoryLabels: Record<ProductCategory, string>;
 }) {
   const [active, setActive] = useState<CategoryFilter>("all");
