@@ -125,18 +125,39 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
 }
 
 function PlaceholderArt() {
+  // Default banner illustration (vector): a stylised eyewear display.
   return (
     <svg
-      className="absolute inset-0 h-full w-full opacity-[0.12]"
-      viewBox="0 0 400 300"
+      className="absolute inset-0 h-full w-full"
+      viewBox="0 0 800 500"
       preserveAspectRatio="xMidYMid slice"
       fill="none"
+      aria-hidden="true"
     >
-      <g stroke="#0e0e0e" strokeWidth="3">
-        <circle cx="120" cy="150" r="55" />
-        <circle cx="250" cy="150" r="55" />
-        <path d="M175 150c10-14 40-14 50 0" strokeLinecap="round" />
-        <path d="M65 138 30 108M305 138l35-30" strokeLinecap="round" />
+      {/* soft bokeh */}
+      <g opacity="0.5">
+        <circle cx="150" cy="90" r="70" fill="#caaa70" opacity="0.18" />
+        <circle cx="300" cy="380" r="90" fill="#1accbf" opacity="0.14" />
+        <circle cx="60" cy="330" r="45" fill="#caaa70" opacity="0.14" />
+      </g>
+      {/* display shelves */}
+      <g stroke="#0e0e0e" strokeOpacity="0.10" strokeWidth="4">
+        <path d="M40 170h340M40 300h340M40 430h300" />
+      </g>
+      {/* mini frames on shelves */}
+      <g stroke="#0e0e0e" strokeOpacity="0.14" strokeWidth="3">
+        <g transform="translate(70 140)"><rect width="46" height="24" rx="10" /></g>
+        <g transform="translate(150 140)"><rect width="46" height="24" rx="10" /></g>
+        <g transform="translate(230 140)"><rect width="46" height="24" rx="10" /></g>
+        <g transform="translate(70 270)"><rect width="46" height="24" rx="10" /></g>
+        <g transform="translate(150 270)"><rect width="46" height="24" rx="10" /></g>
+      </g>
+      {/* hero glasses */}
+      <g transform="translate(250 250)" stroke="#0e0e0e" strokeOpacity="0.22" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" fill="none">
+        <circle cx="-95" cy="0" r="72" />
+        <circle cx="95" cy="0" r="72" />
+        <path d="M-22 -6c14 -18 44 -18 44 0" />
+        <path d="M-167 -18 -215 -52M167 -18 215 -52" />
       </g>
     </svg>
   );

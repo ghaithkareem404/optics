@@ -1,6 +1,5 @@
 import type { Product } from "@/data/types";
 import type { Locale } from "@/i18n/config";
-import { formatPrice } from "@/lib/utils";
 import { ProductArt } from "./ProductArt";
 
 export function ProductCard({
@@ -10,7 +9,7 @@ export function ProductCard({
 }: {
   product: Product;
   locale: Locale;
-  labels: { from: string; currency: string; inquire: string };
+  labels: { inquire: string };
 }) {
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-ink/5 bg-white shadow-card transition-shadow duration-300 hover:shadow-card-hover">
@@ -23,23 +22,13 @@ export function ProductCard({
         </span>
       </div>
       <div className="flex flex-1 flex-col gap-3 p-5">
-        <h3 className="font-display text-lg font-semibold text-ink">
-          {product.name[locale]}
-        </h3>
-        <div className="mt-auto flex items-center justify-between gap-3">
-          <div className="text-sm text-ink-muted">
-            <span className="block text-xs">{labels.from}</span>
-            <span className="font-semibold text-ink">
-              {formatPrice(product.price, locale)} {labels.currency}
-            </span>
-          </div>
-          <button
-            type="button"
-            className="rounded-full border border-gold px-4 py-2 text-xs font-semibold text-gold-dark transition-colors hover:bg-gold hover:text-ink"
-          >
-            {labels.inquire}
-          </button>
-        </div>
+        <h3 className="font-display text-lg font-semibold text-ink">{product.name[locale]}</h3>
+        <button
+          type="button"
+          className="mt-auto self-start rounded-full border border-gold px-5 py-2 text-xs font-semibold text-gold-dark transition-colors hover:bg-gold hover:text-ink"
+        >
+          {labels.inquire}
+        </button>
       </div>
     </article>
   );
