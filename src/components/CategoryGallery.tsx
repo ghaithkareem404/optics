@@ -60,7 +60,7 @@ export async function CategoryGallery({
     .filter((g) => g.photos.length > 0);
 
   if (groups.length === 0) {
-    if (categoryId && emptyText) {
+    if (emptyText) {
       return (
         <section className="py-20">
           <Container>
