@@ -50,6 +50,16 @@
     "title": "Leading global brands",
     "subtitle": "World-class quality we trust — official agents for the most renowned eyewear and lens brands"
   },
+  "homeHours": {
+    "eyebrow": "Opening hours",
+    "title": "Open every day",
+    "days": "All week long",
+    "open": "From",
+    "close": "to",
+    "from": "9:00 AM",
+    "to": "12:00 Midnight",
+    "note": "Welcoming you at our two Al-Harthiya branches"
+  },
   "products": {
     "title": "Our Products",
     "subtitle": "Discover the latest sunglasses and optical collections from the world's most famous brands",
