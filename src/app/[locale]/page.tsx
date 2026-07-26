@@ -6,6 +6,7 @@ import { FeaturedProducts } from "@/components/FeaturedProducts";
 import { BrandStrip } from "@/components/BrandStrip";
 import { WhyChooseUs } from "@/components/WhyChooseUs";
 import { Testimonials } from "@/components/Testimonials";
+import { HoursBanner } from "@/components/HoursBanner";
 import { CTASection } from "@/components/CTASection";
 
 export default async function HomePage({ params }: { params: { locale: string } }) {
@@ -15,10 +16,11 @@ export default async function HomePage({ params }: { params: { locale: string } 
   return (
     <>
       <HeroVideo locale={params.locale} dict={dict} />
-      <FeaturedProducts locale={params.locale} dict={dict} />
       <BrandStrip locale={params.locale} dict={dict} />
+      <FeaturedProducts locale={params.locale} dict={dict} />
       <WhyChooseUs dict={dict} />
       <Testimonials locale={params.locale} dict={dict} />
+      <HoursBanner dict={dict} />
       <CTASection locale={params.locale} dict={dict} />
     </>
   );
