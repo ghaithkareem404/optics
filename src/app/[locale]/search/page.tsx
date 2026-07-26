@@ -31,6 +31,8 @@ export default async function SearchPage({ params }: { params: { locale: string 
   const items: SearchItem[] = models.map((m) => ({
     id: m.id,
     name: m.name,
+    subtitle: m.subtitle,
+    description: m.description,
     folder: folderName(m.collectionId),
     category: categoryLabel(m.categoryId, locale),
     src: `/api/media/${m.pathname}`,
@@ -49,6 +51,8 @@ export default async function SearchPage({ params }: { params: { locale: string 
               prompt: dict.search.prompt,
               results: dict.search.results,
             }}
+            productLabels={dict.product}
+            whatsapp={dict.contact.phone.replace(/\D/g, "")}
           />
         </Container>
       </section>

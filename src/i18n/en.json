@@ -79,6 +79,16 @@
   "gallery": {
     "empty": "No images in this section yet."
   },
+  "product": {
+    "info": "Product info",
+    "description": "Description",
+    "share": "Share",
+    "copyLink": "Copy link",
+    "copied": "Copied",
+    "gallery": "Product images",
+    "inquire": "Inquire about this product",
+    "noDescription": "No description for this product."
+  },
   "about": {
     "title": "Z&O Optics Center",
     "subtitle": "Medical precision & modern elegance in one place",

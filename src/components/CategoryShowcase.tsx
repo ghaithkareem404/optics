@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
-import { PhotoGrid, type Photo } from "./PhotoGrid";
+import { PhotoGrid, type Photo, type PhotoLabels } from "./PhotoGrid";
 
 export interface ShowcasePhoto extends Photo {
   folderId: string;
@@ -22,10 +22,14 @@ export function CategoryShowcase({
   folders,
   photos,
   allLabel,
+  labels,
+  whatsapp,
 }: {
   folders: ShowcaseFolder[];
   photos: ShowcasePhoto[];
   allLabel: string;
+  labels: PhotoLabels;
+  whatsapp?: string;
 }) {
   const [active, setActive] = useState<string>("all");
 
@@ -73,7 +77,7 @@ export function CategoryShowcase({
 
       {/* key forces a remount so the entrance animation replays on filter change */}
       <div key={active}>
-        <PhotoGrid photos={shown} />
+        <PhotoGrid photos={shown} labels={labels} whatsapp={whatsapp} />
       </div>
     </div>
   );

@@ -27,6 +27,8 @@ export async function POST(request: Request) {
   const categoryId = String(form.get("categoryId") ?? form.get("brandId") ?? "").trim();
   const collectionId = String(form.get("collectionId") ?? "").trim();
   const name = String(form.get("name") ?? "").trim();
+  const subtitle = String(form.get("subtitle") ?? "").trim();
+  const description = String(form.get("description") ?? "").trim();
   const file = form.get("image");
 
   if (!categoryId) return NextResponse.json({ error: "missing_category" }, { status: 400 });
@@ -42,7 +44,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const item = await addModel({ categoryId, collectionId, name, file });
+    const item = await addModel({ categoryId, collectionId, name, subtitle, description, file });
     return NextResponse.json({ ok: true, item });
   } catch (e) {
     console.error("blob upload failed:", e);

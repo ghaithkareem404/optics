@@ -1,5 +1,6 @@
 import type { Locale } from "@/i18n/config";
 import { getCatalog } from "@/lib/catalog";
+import { getDictionary } from "@/i18n/dictionaries";
 import { categories, categoryLabel } from "@/data/categories";
 import { Container } from "./ui";
 import { CategoryShowcase, type ShowcasePhoto, type ShowcaseFolder } from "./CategoryShowcase";
@@ -21,12 +22,16 @@ export async function CategoryGallery({
   emptyText?: string;
 }) {
   const { collections, models } = await getCatalog();
+  const dict = await getDictionary(locale);
   const allLabel = locale === "ar" ? "الكل" : "All";
+  const labels = dict.product;
+  const whatsapp = dict.contact.phone.replace(/\D/g, "");
 
   const shown = categoryId ? categories.filter((c) => c.id === categoryId) : categories;
 
   const groups = shown
     .map((cat) => {
+      const catLabel = categoryLabel(cat.id, locale);
       const catFolders = collections.filter((c) => c.categoryId === cat.id);
       const folders: ShowcaseFolder[] = catFolders
         .map((c) => ({
@@ -36,17 +41,21 @@ export async function CategoryGallery({
         }))
         .filter((f) => f.count > 0);
 
-      const folderIds = new Set(folders.map((f) => f.id));
+      const folderById = new Map(catFolders.map((c) => [c.id, c.name]));
       const photos: ShowcasePhoto[] = models
-        .filter((m) => m.categoryId === cat.id && folderIds.has(m.collectionId))
+        .filter((m) => m.categoryId === cat.id && folderById.has(m.collectionId))
         .map((m) => ({
           id: m.id,
           src: `/api/media/${m.pathname}`,
           name: m.name,
+          subtitle: m.subtitle,
+          description: m.description,
+          category: catLabel,
+          folder: folderById.get(m.collectionId),
           folderId: m.collectionId,
         }));
 
-      return { cat, folders, photos };
+      return { cat, catLabel, folders, photos };
     })
     .filter((g) => g.photos.length > 0);
 
@@ -82,21 +91,25 @@ export async function CategoryGallery({
         ) : null}
 
         <div className="space-y-20">
-          {groups.map(({ cat, folders, photos }) => (
+          {groups.map(({ cat, catLabel, folders, photos }) => (
             <div key={cat.id}>
               {!single ? (
                 <div className="mb-8 flex items-center gap-3">
                   <span className="h-8 w-1.5 rounded-full bg-gold" />
-                  <h3 className="font-display text-2xl font-bold text-ink">
-                    {categoryLabel(cat.id, locale)}
-                  </h3>
+                  <h3 className="font-display text-2xl font-bold text-ink">{catLabel}</h3>
                   <span className="rounded-full bg-ink/5 px-3 py-1 text-xs font-medium text-ink-muted">
                     {photos.length}
                   </span>
                 </div>
               ) : null}
 
-              <CategoryShowcase folders={folders} photos={photos} allLabel={allLabel} />
+              <CategoryShowcase
+                folders={folders}
+                photos={photos}
+                allLabel={allLabel}
+                labels={labels}
+                whatsapp={whatsapp}
+              />
             </div>
           ))}
         </div>
