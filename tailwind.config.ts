@@ -54,11 +54,16 @@ const config: Config = {
           "0%": { opacity: "0", transform: "scale(0.94)" },
           "100%": { opacity: "1", transform: "scale(1)" },
         },
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.6s ease-out both",
         "pop-in": "pop-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both",
         "zoom-in": "zoom-in 0.3s ease-out both",
+        marquee: "marquee 40s linear infinite",
       },
     },
   },
