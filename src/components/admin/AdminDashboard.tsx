@@ -129,37 +129,69 @@ export function AdminDashboard({
     }
   }
 
-  async function upload(file: File) {
-    if (!activeCol) return;
-    if (!file.type.startsWith("image/")) {
-      setMsg({ kind: "err", text: "الملف يجب أن يكون صورة." });
+  async function uploadOne(file: File, name: string): Promise<boolean> {
+    const form = new FormData();
+    form.append("categoryId", activeCat);
+    form.append("collectionId", activeCol as string);
+    form.append("name", name);
+    form.append("image", file);
+    const res = await fetch("/api/admin/models", { method: "POST", body: form });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.item) {
+      setModels((prev) => [data.item, ...prev]);
+      return true;
+    }
+    if (data.error === "unauthorized") router.refresh();
+    return false;
+  }
+
+  // Uploads one image or many, sequentially (the manifest is a shared file, so
+  // parallel writes would clobber each other).
+  async function uploadFiles(files: File[]) {
+    if (!activeCol || files.length === 0) return;
+    const images = files.filter((f) => f.type.startsWith("image/"));
+    const skipped = files.length - images.length;
+    if (images.length === 0) {
+      setMsg({ kind: "err", text: "الملفات يجب أن تكون صوراً." });
       return;
     }
     setBusy(true);
-    setMsg(null);
+    setMsg({ kind: "ok", text: `جارٍ رفع ${images.length} صورة…` });
+    let ok = 0;
+    let failed = 0;
     try {
-      const form = new FormData();
-      form.append("categoryId", activeCat);
-      form.append("collectionId", activeCol);
-      form.append("name", imgName);
-      form.append("image", file);
-      const res = await fetch("/api/admin/models", { method: "POST", body: form });
-      const data = await res.json().catch(() => ({}));
-      if (res.ok && data.item) {
-        setModels((prev) => [data.item, ...prev]);
-        setImgName("");
-        setMsg({ kind: "ok", text: "تم رفع الصورة بنجاح." });
-      } else if (data.error === "unauthorized") {
-        router.refresh();
-      } else if (data.error === "upload_failed") {
-        setMsg({ kind: "err", text: "تعذّر الرفع: " + (data.detail || "خطأ غير معروف") });
-      } else {
-        setMsg({ kind: "err", text: "تعذّر رفع الصورة، حاول مجدداً." });
+      for (let i = 0; i < images.length; i++) {
+        // A single-image upload keeps the typed name; batches upload untitled.
+        const name = images.length === 1 ? imgName : "";
+        const success = await uploadOne(images[i], name);
+        if (success) ok++;
+        else failed++;
+        setMsg({ kind: "ok", text: `تم رفع ${ok} من ${images.length}…` });
       }
     } catch {
-      setMsg({ kind: "err", text: "خطأ في الاتصال." });
-    } finally {
+      setMsg({ kind: "err", text: "خطأ في الاتصال أثناء الرفع." });
       setBusy(false);
+      return;
+    }
+    if (ok > 0) setImgName("");
+    const parts = [`تم رفع ${ok} صورة`];
+    if (failed) parts.push(`فشل ${failed}`);
+    if (skipped) parts.push(`تم تجاهل ${skipped} ملف غير صورة`);
+    setMsg({ kind: failed ? "err" : "ok", text: parts.join(" · ") });
+    setBusy(false);
+  }
+
+  async function renameModelName(id: string, current: string) {
+    const name = prompt("اسم الصورة (اتركه فارغاً لإزالة العنوان):", current);
+    if (name === null) return;
+    const trimmed = name.trim();
+    const res = await fetch(`/api/admin/models/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: trimmed }),
+    });
+    if (res.ok) {
+      setModels((prev) => prev.map((m) => (m.id === id ? { ...m, name: trimmed } : m)));
     }
   }
 
@@ -237,36 +269,14 @@ export function AdminDashboard({
           ) : (
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
               {searchResults.map((m) => (
-                <div
+                <ModelCard
                   key={m.id}
-                  className="group relative overflow-hidden rounded-xl border border-ink/5 bg-white shadow-card"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={`/api/media/${m.pathname}`}
-                    alt={m.name || "model"}
-                    className="aspect-square w-full object-cover"
-                    loading="lazy"
-                  />
-                  <div className="px-3 py-2">
-                    {m.name ? (
-                      <p className="truncate text-xs font-medium text-ink">{m.name}</p>
-                    ) : null}
-                    <p className="truncate text-[11px] text-ink-muted">
-                      {catLabel(m.categoryId)} · {colName(m.collectionId)}
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => removeModel(m.id)}
-                    aria-label="حذف"
-                    className="absolute top-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-red-600 opacity-0 shadow transition-opacity hover:bg-red-600 hover:text-white group-hover:opacity-100 ltr:right-2 rtl:left-2"
-                  >
-                    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <path d="M4 7h16M9 7V5h6v2m-8 0 1 13h8l1-13" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </button>
-                </div>
+                  src={`/api/media/${m.pathname}`}
+                  name={m.name}
+                  subtitle={`${catLabel(m.categoryId)} · ${colName(m.collectionId)}`}
+                  onRename={() => renameModelName(m.id, m.name)}
+                  onRemove={() => removeModel(m.id)}
+                />
               ))}
             </div>
           )}
@@ -392,9 +402,15 @@ export function AdminDashboard({
                 <span className="text-ink-muted">الفولدر الحالي:</span>
                 <span className="font-semibold text-gold-dark">{activeCollection?.name}</span>
               </div>
+              <label className="mb-1 block text-xs font-medium text-ink-muted">
+                اسم الصورة{" "}
+                <span className="font-normal opacity-70">
+                  (اختياري — يظهر كعنوان تحت الصورة، ويُستخدم عند رفع صورة واحدة)
+                </span>
+              </label>
               <input
                 className={cn(field, "mb-3")}
-                placeholder="اسم الصورة (يظهر كعنوان تحتها)"
+                placeholder="مثال: إطار Bella الذهبي"
                 value={imgName}
                 onChange={(e) => setImgName(e.target.value)}
               />
@@ -407,31 +423,37 @@ export function AdminDashboard({
                 onDrop={(e) => {
                   e.preventDefault();
                   setDragging(false);
-                  const f = e.dataTransfer.files?.[0];
-                  if (f) upload(f);
+                  const fs = Array.from(e.dataTransfer.files ?? []);
+                  if (fs.length) uploadFiles(fs);
                 }}
-                onClick={() => inputRef.current?.click()}
+                onClick={() => !busy && inputRef.current?.click()}
                 className={cn(
-                  "flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-6 py-10 text-center transition-colors",
+                  "flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-12 text-center transition-colors",
                   dragging ? "border-gold bg-gold/5" : "border-ink/15 hover:border-gold/60",
+                  busy && "pointer-events-none opacity-60",
                 )}
               >
-                <svg viewBox="0 0 24 24" className="h-8 w-8 text-gold" fill="none" stroke="currentColor" strokeWidth="1.6">
-                  <path d="M12 16V4m0 0 4 4m-4-4-4 4" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" strokeLinecap="round" />
-                </svg>
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold/15">
+                  <svg viewBox="0 0 24 24" className="h-6 w-6 text-gold-dark" fill="none" stroke="currentColor" strokeWidth="1.6">
+                    <path d="M12 16V4m0 0 4 4m-4-4-4 4" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" strokeLinecap="round" />
+                  </svg>
+                </div>
                 <p className="mt-3 text-sm font-medium text-ink">
-                  {busy ? "جارٍ الرفع…" : "اسحب الصورة هنا أو اضغط للاختيار"}
+                  {busy ? "جارٍ الرفع…" : "اسحب الصور هنا أو اضغط للاختيار"}
                 </p>
-                <p className="mt-1 text-xs text-ink-muted">JPG / PNG / WEBP — حتى 8MB</p>
+                <p className="mt-1 text-xs text-ink-muted">
+                  يمكن اختيار أكثر من صورة دفعة واحدة · JPG / PNG / WEBP — حتى 8MB
+                </p>
                 <input
                   ref={inputRef}
                   type="file"
                   accept="image/*"
+                  multiple
                   className="hidden"
                   onChange={(e) => {
-                    const f = e.target.files?.[0];
-                    if (f) upload(f);
+                    const fs = Array.from(e.target.files ?? []);
+                    if (fs.length) uploadFiles(fs);
                     e.target.value = "";
                   }}
                 />
@@ -454,21 +476,13 @@ export function AdminDashboard({
                 ) : (
                   <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                     {colModels.map((m) => (
-                      <div key={m.id} className="group relative overflow-hidden rounded-xl border border-ink/5 bg-white shadow-card">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={`/api/media/${m.pathname}`} alt={m.name || "model"} className="aspect-square w-full object-cover" loading="lazy" />
-                        {m.name ? <p className="truncate px-3 py-2 text-xs font-medium text-ink">{m.name}</p> : null}
-                        <button
-                          type="button"
-                          onClick={() => removeModel(m.id)}
-                          aria-label="حذف"
-                          className="absolute top-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-red-600 opacity-0 shadow transition-opacity hover:bg-red-600 hover:text-white group-hover:opacity-100 ltr:right-2 rtl:left-2"
-                        >
-                          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
-                            <path d="M4 7h16M9 7V5h6v2m-8 0 1 13h8l1-13" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        </button>
-                      </div>
+                      <ModelCard
+                        key={m.id}
+                        src={`/api/media/${m.pathname}`}
+                        name={m.name}
+                        onRename={() => renameModelName(m.id, m.name)}
+                        onRemove={() => removeModel(m.id)}
+                      />
                     ))}
                   </div>
                 )}
@@ -478,5 +492,71 @@ export function AdminDashboard({
         </>
       )}
     </div>
+  );
+}
+
+function ModelCard({
+  src,
+  name,
+  subtitle,
+  onRename,
+  onRemove,
+}: {
+  src: string;
+  name: string;
+  subtitle?: string;
+  onRename: () => void;
+  onRemove: () => void;
+}) {
+  return (
+    <figure className="group relative overflow-hidden rounded-2xl border border-ink/5 bg-white shadow-card transition-shadow hover:shadow-card-hover">
+      <div className="relative aspect-square overflow-hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt={name || "model"}
+          loading="lazy"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        {/* action bar on hover */}
+        <div className="absolute inset-x-0 top-0 flex justify-end gap-1.5 bg-gradient-to-b from-black/45 to-transparent p-2 opacity-0 transition-opacity group-hover:opacity-100">
+          <button
+            type="button"
+            onClick={onRename}
+            aria-label="تعديل الاسم"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/95 text-ink shadow transition-colors hover:bg-gold hover:text-ink"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <path d="M4 20h4L18 10l-4-4L4 16v4Z" strokeLinejoin="round" />
+              <path d="m14 6 4 4" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onClick={onRemove}
+            aria-label="حذف"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/95 text-red-600 shadow transition-colors hover:bg-red-600 hover:text-white"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <path d="M4 7h16M9 7V5h6v2m-8 0 1 13h8l1-13" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <figcaption className="px-3 py-2.5">
+        {name ? (
+          <p className="truncate text-sm font-medium text-ink">{name}</p>
+        ) : (
+          <button
+            type="button"
+            onClick={onRename}
+            className="text-xs italic text-ink-muted/70 underline decoration-dotted underline-offset-2 hover:text-gold-dark"
+          >
+            + أضف اسماً
+          </button>
+        )}
+        {subtitle ? <p className="mt-0.5 truncate text-[11px] text-ink-muted">{subtitle}</p> : null}
+      </figcaption>
+    </figure>
   );
 }

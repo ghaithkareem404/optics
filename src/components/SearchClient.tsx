@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { PhotoGrid } from "./PhotoGrid";
 
 export interface SearchItem {
   id: string;
@@ -69,31 +70,14 @@ export function SearchClient({
             <p className="mb-6 text-sm text-ink-muted">
               {results.length} {labels.results}
             </p>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-              {results.map((it) => (
-                <figure
-                  key={it.id}
-                  className="group overflow-hidden rounded-2xl border border-ink/5 bg-white shadow-card transition-shadow hover:shadow-card-hover"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={it.src}
-                    alt={it.name || "model"}
-                    loading="lazy"
-                    className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <figcaption className="px-4 py-3">
-                    {it.name ? (
-                      <p className="truncate text-sm font-medium text-ink">{it.name}</p>
-                    ) : null}
-                    <p className="truncate text-xs text-ink-muted">
-                      {it.category}
-                      {it.folder ? ` · ${it.folder}` : ""}
-                    </p>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
+            <PhotoGrid
+              photos={results.map((it) => ({
+                id: it.id,
+                src: it.src,
+                name: it.name,
+                meta: it.folder ? `${it.category} · ${it.folder}` : it.category,
+              }))}
+            />
           </>
         )}
       </div>

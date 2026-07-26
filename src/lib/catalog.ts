@@ -42,7 +42,10 @@ function normalizeCategory(raw: unknown): string {
  *  catalog on any error so the public site never breaks. */
 export async function getCatalog(): Promise<Catalog> {
   try {
-    const result = await get(MANIFEST_PATH, { access: "private" });
+    // useCache:false is essential — the Blob CDN caches downloads for up to a
+    // month by default, so without it we'd read a stale manifest right after a
+    // write and lose newly-added folders/images on the next read-modify-write.
+    const result = await get(MANIFEST_PATH, { access: "private", useCache: false });
     if (!result || !result.stream) return { collections: [], models: [] };
     const text = await new Response(result.stream).text();
     const data = JSON.parse(text) as Partial<Catalog>;
@@ -65,6 +68,8 @@ async function saveCatalog(catalog: Catalog): Promise<void> {
     contentType: "application/json",
     addRandomSuffix: false,
     allowOverwrite: true,
+    // Don't let the manifest linger in the CDN cache — it changes on every edit.
+    cacheControlMaxAge: 0,
   });
 }
 
@@ -132,6 +137,15 @@ export async function addModel(input: {
   catalog.models.unshift(item);
   await saveCatalog(catalog);
   return item;
+}
+
+export async function renameModel(id: string, name: string): Promise<boolean> {
+  const catalog = await getCatalog();
+  const item = catalog.models.find((m) => m.id === id);
+  if (!item) return false;
+  item.name = name;
+  await saveCatalog(catalog);
+  return true;
 }
 
 export async function deleteModel(id: string): Promise<boolean> {
