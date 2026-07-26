@@ -25,10 +25,12 @@ export async function POST(request: Request) {
   }
 
   const brandId = String(form.get("brandId") ?? "").trim();
+  const collectionId = String(form.get("collectionId") ?? "").trim();
   const name = String(form.get("name") ?? "").trim();
   const file = form.get("image");
 
   if (!brandId) return NextResponse.json({ error: "missing_brand" }, { status: 400 });
+  if (!collectionId) return NextResponse.json({ error: "missing_collection" }, { status: 400 });
   if (!(file instanceof File) || file.size === 0) {
     return NextResponse.json({ error: "missing_image" }, { status: 400 });
   }
@@ -40,7 +42,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const item = await addModel({ brandId, name, file });
+    const item = await addModel({ brandId, collectionId, name, file });
     return NextResponse.json({ ok: true, item });
   } catch (e) {
     console.error("blob upload failed:", e);
