@@ -30,7 +30,11 @@ export default async function AdminPage() {
   return (
     <section className="min-h-[70vh] bg-cream py-12">
       <Container>
-        <AdminDashboard brands={brandOptions} initialModels={catalog.models} />
+        <AdminDashboard
+          brands={brandOptions}
+          initialCollections={catalog.collections}
+          initialModels={catalog.models}
+        />
       </Container>
     </section>
   );
