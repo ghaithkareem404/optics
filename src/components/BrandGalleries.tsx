@@ -42,7 +42,7 @@ export async function BrandGalleries({
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={m.url}
+                      src={`/api/media/${m.pathname}`}
                       alt={m.name || brand.name}
                       loading="lazy"
                       className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
