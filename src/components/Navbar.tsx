@@ -7,6 +7,7 @@ import type { Locale } from "@/i18n/config";
 import { locales, localeLabel } from "@/i18n/config";
 import { cn } from "@/lib/utils";
 import { Logo } from "./Logo";
+import { ThemeToggle } from "./ThemeToggle";
 
 interface NavDict {
   home: string;
@@ -51,7 +52,7 @@ export function Navbar({
   const brandSub = locale === "ar" ? "للبصريات" : "Optics";
 
   return (
-    <header className="sticky top-0 z-50 bg-ink text-white shadow-lg">
+    <header className="sticky top-0 z-50 bg-night text-white shadow-lg">
       <nav className="container flex h-20 items-center justify-between gap-4">
         {/* Brand (right in RTL) */}
         <Link
@@ -99,13 +100,15 @@ export function Navbar({
           <Link
             href={`/${locale}/search`}
             aria-label={locale === "ar" ? "بحث" : "Search"}
-            className="hidden h-11 w-11 items-center justify-center rounded-full bg-gold text-ink transition-colors hover:bg-gold-light sm:inline-flex"
+            className="hidden h-11 w-11 items-center justify-center rounded-full bg-gold text-night transition-colors hover:bg-gold-light sm:inline-flex"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="11" cy="11" r="7" />
               <path d="m20 20-3.5-3.5" strokeLinecap="round" />
             </svg>
           </Link>
+
+          <ThemeToggle />
 
           <button
             type="button"
@@ -127,7 +130,7 @@ export function Navbar({
 
       {/* Mobile menu */}
       {open ? (
-        <div className="border-t border-white/10 bg-ink xl:hidden">
+        <div className="border-t border-white/10 bg-night xl:hidden">
           <ul className="container flex flex-col py-3">
             {links.map((link, i) => (
               <li key={link.label}>

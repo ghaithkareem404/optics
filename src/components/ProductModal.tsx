@@ -104,7 +104,7 @@ export function ProductModal({
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/90 p-3 backdrop-blur-md sm:p-6"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-night/90 p-3 backdrop-blur-md sm:p-6"
       onClick={close}
       role="dialog"
       aria-modal="true"
@@ -126,7 +126,7 @@ export function ProductModal({
             type="button"
             onClick={(e) => { e.stopPropagation(); prev(); }}
             aria-label="السابق"
-            className="absolute z-10 grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-gold hover:text-ink ltr:left-3 rtl:right-3"
+            className="absolute z-10 grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-gold hover:text-night ltr:left-3 rtl:right-3"
           >
             <svg viewBox="0 0 24 24" className="h-6 w-6 rtl:-scale-x-100" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="m15 6-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
@@ -136,7 +136,7 @@ export function ProductModal({
             type="button"
             onClick={(e) => { e.stopPropagation(); next(); }}
             aria-label="التالي"
-            className="absolute z-10 grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-gold hover:text-ink ltr:right-3 rtl:left-3"
+            className="absolute z-10 grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-gold hover:text-night ltr:right-3 rtl:left-3"
           >
             <svg viewBox="0 0 24 24" className="h-6 w-6 rtl:-scale-x-100" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="m9 6 6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
@@ -147,12 +147,12 @@ export function ProductModal({
 
       <div
         key={active.id}
-        className="grid max-h-[92vh] w-full max-w-5xl animate-zoom-in overflow-hidden rounded-3xl bg-white shadow-2xl md:grid-cols-2"
+        className="grid max-h-[92vh] w-full max-w-5xl animate-zoom-in overflow-hidden rounded-3xl bg-surface shadow-2xl md:grid-cols-2"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Media */}
         <div className="flex flex-col bg-cream p-4 sm:p-6">
-          <div className="relative flex-1 overflow-hidden rounded-2xl bg-white">
+          <div className="relative flex-1 overflow-hidden rounded-2xl bg-surface">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={active.src}
@@ -207,7 +207,7 @@ export function ProductModal({
                   </span>
                 ) : null}
                 {active.folder ? (
-                  <span className="rounded-full bg-ink/5 px-3 py-1 text-xs font-medium text-ink-soft">
+                  <span className="rounded-full bg-night/5 px-3 py-1 text-xs font-medium text-ink-soft">
                     {active.folder}
                   </span>
                 ) : null}
@@ -221,7 +221,7 @@ export function ProductModal({
                 href={inquireHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-gold hover:text-ink"
+                className="inline-flex items-center gap-2 rounded-full bg-night px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-gold hover:text-night"
               >
                 <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
                   <path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 .9-2.2c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .5l-.4.5-.3.3c-.1.1-.3.3-.1.5.1.3.6 1 1.3 1.6.9.8 1.6 1 1.9 1.2.2.1.4.1.5-.1l.7-.8c.2-.2.3-.2.5-.1l1.8.9c.2.1.4.2.4.3.1.1.1.6-.1 1.2Z" />

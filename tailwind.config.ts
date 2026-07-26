@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./src/app/**/*.{ts,tsx}",
     "./src/components/**/*.{ts,tsx}",
@@ -15,11 +16,17 @@ const config: Config = {
     },
     extend: {
       colors: {
-        // Brand palette taken from zandooptics.com: warm gold + soft teal + mint on near-black.
+        // Brand palette from zandooptics.com: warm gold + soft teal + mint.
+        // ink / cream / surface are theme-aware (CSS variables swap in dark mode);
+        // night is a fixed near-black for intentionally-dark areas (header, overlays).
         ink: {
+          DEFAULT: "rgb(var(--ink) / <alpha-value>)",
+          soft: "rgb(var(--ink-soft) / <alpha-value>)",
+          muted: "rgb(var(--ink-muted) / <alpha-value>)",
+        },
+        night: {
           DEFAULT: "#0e0e0e",
           soft: "#2b2b2b",
-          muted: "#6b6b6b",
         },
         gold: {
           DEFAULT: "#caaa70",
@@ -30,8 +37,8 @@ const config: Config = {
           DEFAULT: "#1accbf",
           dark: "#14a79c",
         },
-        // Reused everywhere as the light section background (the site's mint tint).
-        cream: "#ecf3f2",
+        cream: "rgb(var(--cream) / <alpha-value>)",
+        surface: "rgb(var(--surface) / <alpha-value>)",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],

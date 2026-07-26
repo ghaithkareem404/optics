@@ -23,7 +23,7 @@ export function ContactForm({ labels }: { labels: FormLabels }) {
   }
 
   const field =
-    "w-full rounded-xl border border-ink/15 bg-white px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-ink-muted/60 focus:border-gold";
+    "w-full rounded-xl border border-ink/15 bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-ink-muted/60 focus:border-gold";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -35,7 +35,7 @@ export function ContactForm({ labels }: { labels: FormLabels }) {
       <textarea className={field} name="message" placeholder={labels.message} rows={5} required />
       <button
         type="submit"
-        className="rounded-full bg-gold px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-gold-dark hover:text-white"
+        className="rounded-full bg-gold px-6 py-3 text-sm font-semibold text-night transition-colors hover:bg-gold-dark hover:text-white"
       >
         {labels.submit}
       </button>

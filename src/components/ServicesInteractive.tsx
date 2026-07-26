@@ -34,7 +34,7 @@ export function ServicesInteractive({
                 <li
                   key={service.id}
                   className={cn(
-                    "overflow-hidden rounded-2xl border bg-white transition-all duration-300",
+                    "overflow-hidden rounded-2xl border bg-surface transition-all duration-300",
                     on ? "border-gold shadow-card-hover" : "border-ink/8 hover:border-gold/50",
                   )}
                 >

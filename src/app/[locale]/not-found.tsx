@@ -8,7 +8,7 @@ export default function NotFound() {
         <p className="mt-4 text-ink-muted">الصفحة غير موجودة · Page not found</p>
         <Link
           href="/ar"
-          className="mt-6 inline-block rounded-full bg-gold px-6 py-3 text-sm font-semibold text-ink"
+          className="mt-6 inline-block rounded-full bg-gold px-6 py-3 text-sm font-semibold text-night"
         >
           العودة للرئيسية · Back home
         </Link>

@@ -39,12 +39,12 @@ export function LoginForm() {
   }
 
   const field =
-    "w-full rounded-xl border border-ink/15 bg-white px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-ink-muted/60 focus:border-gold";
+    "w-full rounded-xl border border-ink/15 bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-ink-muted/60 focus:border-gold";
 
   return (
-    <div className="mx-auto max-w-sm rounded-2xl border border-ink/5 bg-white p-8 shadow-card">
+    <div className="mx-auto max-w-sm rounded-2xl border border-ink/5 bg-surface p-8 shadow-card">
       <div className="flex flex-col items-center text-center">
-        <span className="flex h-14 w-20 items-center justify-center rounded-xl bg-ink">
+        <span className="flex h-14 w-20 items-center justify-center rounded-xl bg-night">
           <Logo className="h-8 w-12" />
         </span>
         <h1 className="mt-4 font-display text-xl font-bold text-ink">لوحة تحكم Z&amp;O</h1>
@@ -73,7 +73,7 @@ export function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-xl bg-gold px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-gold-dark hover:text-white disabled:opacity-60"
+          className="w-full rounded-xl bg-gold px-6 py-3 text-sm font-semibold text-night transition-colors hover:bg-gold-dark hover:text-white disabled:opacity-60"
         >
           {loading ? "جارٍ الدخول…" : "دخول"}
         </button>

@@ -6,7 +6,7 @@ const icons = [EyeIcon, ShieldIcon, GlassesIcon, SparkleIcon, LensIcon, ClockIco
 
 export function WhyChooseUs({ dict }: { dict: Dictionary }) {
   return (
-    <section className="bg-ink py-20 text-white">
+    <section className="bg-night py-20 text-white">
       <Container>
         <div className="max-w-2xl">
           <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-gold-light">

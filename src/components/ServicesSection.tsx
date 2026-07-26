@@ -36,7 +36,7 @@ export function ServicesSection({ locale, dict }: { locale: Locale; dict: Dictio
                 <li
                   key={service.id}
                   className={cn(
-                    "overflow-hidden rounded-2xl border bg-white transition-all duration-300",
+                    "overflow-hidden rounded-2xl border bg-surface transition-all duration-300",
                     isOpen
                       ? "border-gold shadow-card-hover"
                       : "border-ink/8 hover:border-gold/50",
@@ -51,7 +51,7 @@ export function ServicesSection({ locale, dict }: { locale: Locale; dict: Dictio
                     <span
                       className={cn(
                         "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-colors",
-                        isOpen ? "bg-gold text-ink" : "bg-gold/12 text-gold-dark",
+                        isOpen ? "bg-gold text-night" : "bg-gold/12 text-gold-dark",
                       )}
                     >
                       <ServiceIcon name={service.icon} className="h-6 w-6" />

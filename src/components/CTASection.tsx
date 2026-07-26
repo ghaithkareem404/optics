@@ -7,7 +7,7 @@ export function CTASection({ locale, dict }: { locale: Locale; dict: Dictionary 
   return (
     <section className="py-20">
       <Container>
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-ink to-ink-soft px-8 py-14 text-center text-white sm:px-12">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-night to-night-soft px-8 py-14 text-center text-white sm:px-12">
           <div className="pointer-events-none absolute inset-0 opacity-20">
             <div className="absolute -top-16 h-56 w-56 rounded-full bg-gold blur-3xl ltr:left-1/4 rtl:right-1/4" />
           </div>

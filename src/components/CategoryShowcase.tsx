@@ -48,15 +48,15 @@ export function CategoryShowcase({
         className={cn(
           "group inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200",
           on
-            ? "border-transparent bg-ink text-white shadow-card"
-            : "border-ink/12 bg-white text-ink-soft hover:border-gold hover:text-ink",
+            ? "border-transparent bg-night text-white shadow-card"
+            : "border-ink/12 bg-surface text-ink-soft hover:border-gold hover:text-night",
         )}
       >
         {label}
         <span
           className={cn(
             "rounded-full px-1.5 py-0.5 text-[11px] leading-none transition-colors",
-            on ? "bg-gold text-ink" : "bg-ink/5 text-ink-muted group-hover:bg-gold/20",
+            on ? "bg-gold text-night" : "bg-night/5 text-ink-muted group-hover:bg-gold/20",
           )}
         >
           {count}
