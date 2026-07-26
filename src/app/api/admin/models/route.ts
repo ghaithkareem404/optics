@@ -39,6 +39,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "too_large" }, { status: 400 });
   }
 
-  const item = await addModel({ brandId, name, file });
-  return NextResponse.json({ ok: true, item });
+  try {
+    const item = await addModel({ brandId, name, file });
+    return NextResponse.json({ ok: true, item });
+  } catch (e) {
+    console.error("blob upload failed:", e);
+    return NextResponse.json(
+      { error: "upload_failed", detail: e instanceof Error ? e.message : String(e) },
+      { status: 500 },
+    );
+  }
 }

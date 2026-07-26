@@ -61,6 +61,8 @@ export function AdminDashboard({
         setMsg({ kind: "err", text: "لم يُفعّل التخزين (Vercel Blob) بعد." });
       } else if (data.error === "unauthorized") {
         router.refresh();
+      } else if (data.error === "upload_failed") {
+        setMsg({ kind: "err", text: "تعذّر الرفع: " + (data.detail || "خطأ غير معروف") });
       } else {
         setMsg({ kind: "err", text: "تعذّر رفع الصورة، حاول مجدداً." });
       }
