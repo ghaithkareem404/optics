@@ -14,6 +14,7 @@ interface Model {
   id: string;
   brandId: string;
   name: string;
+  pathname: string;
   url: string;
   createdAt: number;
 }
@@ -197,7 +198,7 @@ export function AdminDashboard({
             {brandModels.map((m) => (
               <div key={m.id} className="group relative overflow-hidden rounded-xl border border-ink/5 bg-white shadow-card">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={m.url} alt={m.name || "model"} className="aspect-square w-full object-cover" loading="lazy" />
+                <img src={`/api/media/${m.pathname}`} alt={m.name || "model"} className="aspect-square w-full object-cover" loading="lazy" />
                 {m.name ? (
                   <p className="truncate px-3 py-2 text-xs font-medium text-ink">{m.name}</p>
                 ) : null}

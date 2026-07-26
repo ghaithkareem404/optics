@@ -1,13 +1,14 @@
 import "server-only";
 import crypto from "crypto";
-import { put, del, list } from "@vercel/blob";
+import { put, del, get } from "@vercel/blob";
 
 export interface ModelItem {
   id: string;
   brandId: string;
   name: string;
-  url: string;
+  /** Blob pathname; images are served publicly through /api/media/<pathname>. */
   pathname: string;
+  url: string;
   createdAt: number;
 }
 
@@ -17,16 +18,14 @@ export interface Catalog {
 
 const MANIFEST_PATH = "catalog/manifest.json";
 
-/** Read the catalog manifest from Blob. Returns an empty catalog on any error
- *  (e.g. storage not configured yet), so the public site never breaks. */
+/** Read the catalog manifest from the (private) Blob store. Returns an empty
+ *  catalog on any error so the public site never breaks. */
 export async function getCatalog(): Promise<Catalog> {
   try {
-    const { blobs } = await list({ prefix: MANIFEST_PATH });
-    const manifest = blobs.find((b) => b.pathname === MANIFEST_PATH);
-    if (!manifest) return { models: [] };
-    const res = await fetch(manifest.url, { cache: "no-store" });
-    if (!res.ok) return { models: [] };
-    const data = (await res.json()) as Catalog;
+    const result = await get(MANIFEST_PATH, { access: "private" });
+    if (!result || !result.stream) return { models: [] };
+    const text = await new Response(result.stream).text();
+    const data = JSON.parse(text) as Catalog;
     return { models: Array.isArray(data.models) ? data.models : [] };
   } catch {
     return { models: [] };
@@ -35,7 +34,7 @@ export async function getCatalog(): Promise<Catalog> {
 
 async function saveCatalog(catalog: Catalog): Promise<void> {
   await put(MANIFEST_PATH, JSON.stringify(catalog), {
-    access: "public",
+    access: "private",
     contentType: "application/json",
     addRandomSuffix: false,
     allowOverwrite: true,
@@ -50,15 +49,15 @@ export async function addModel(input: {
 }): Promise<ModelItem> {
   const safeName = input.file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
   const blob = await put(`models/${input.brandId}/${safeName}`, input.file, {
-    access: "public",
+    access: "private",
     addRandomSuffix: true,
   });
   const item: ModelItem = {
     id: crypto.randomUUID(),
     brandId: input.brandId,
     name: input.name || "",
-    url: blob.url,
     pathname: blob.pathname,
+    url: blob.url,
     createdAt: Date.now(),
   };
   const catalog = await getCatalog();
