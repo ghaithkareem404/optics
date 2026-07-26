@@ -44,8 +44,8 @@ export function SectionTitle({
 type ButtonVariant = "primary" | "secondary" | "ghost";
 
 const buttonStyles: Record<ButtonVariant, string> = {
-  primary: "bg-gold text-ink hover:bg-gold-dark hover:text-white shadow-card",
-  secondary: "bg-ink text-white hover:bg-ink-soft",
+  primary: "bg-gold text-night hover:bg-gold-dark hover:text-white shadow-card",
+  secondary: "bg-night text-white hover:bg-night-soft",
   ghost: "border border-ink/20 text-ink hover:border-gold hover:text-gold-dark",
 };
 

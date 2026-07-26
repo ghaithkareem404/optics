@@ -30,7 +30,7 @@ export function PhotoGrid({
             key={p.id}
             style={animate ? { animationDelay: `${Math.min(i, 12) * 55}ms` } : undefined}
             className={cn(
-              "group flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-ink/5 bg-white shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card-hover",
+              "group flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-ink/5 bg-surface shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card-hover",
               animate && "animate-pop-in",
             )}
             onClick={() => setIndex(i)}
@@ -43,8 +43,8 @@ export function PhotoGrid({
                 loading="lazy"
                 className="h-full w-full object-cover transition-transform duration-[700ms] ease-out group-hover:scale-110"
               />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              <span className="absolute bottom-3 left-1/2 flex -translate-x-1/2 translate-y-3 items-center gap-1.5 rounded-full bg-white/95 px-4 py-2 text-xs font-semibold text-ink opacity-0 shadow-lg backdrop-blur transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-night/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <span className="absolute bottom-3 left-1/2 flex -translate-x-1/2 translate-y-3 items-center gap-1.5 rounded-full bg-white/95 px-4 py-2 text-xs font-semibold text-night opacity-0 shadow-lg backdrop-blur transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
                 <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="11" cy="11" r="7" />
                   <path d="m20 20-3.5-3.5M11 8v6M8 11h6" strokeLinecap="round" />

@@ -230,7 +230,7 @@ export function AdminDashboard({
   }
 
   const field =
-    "w-full rounded-xl border border-ink/15 bg-white px-4 py-2.5 text-sm text-ink outline-none focus:border-gold";
+    "w-full rounded-xl border border-ink/15 bg-surface px-4 py-2.5 text-sm text-ink outline-none focus:border-gold";
 
   return (
     <div>
@@ -273,7 +273,7 @@ export function AdminDashboard({
           <button
             type="button"
             onClick={() => setQuery("")}
-            className="absolute top-1/2 -translate-y-1/2 text-sm text-ink-muted hover:text-ink ltr:right-3 rtl:left-3"
+            className="absolute top-1/2 -translate-y-1/2 text-sm text-ink-muted hover:text-night ltr:right-3 rtl:left-3"
           >
             ✕
           </button>
@@ -281,7 +281,7 @@ export function AdminDashboard({
       </div>
 
       {query.trim() ? (
-        <div className="mt-4 rounded-2xl border border-ink/5 bg-white p-5 shadow-card">
+        <div className="mt-4 rounded-2xl border border-ink/5 bg-surface p-5 shadow-card">
           <h3 className="mb-3 text-sm font-semibold text-ink">
             نتائج البحث ({searchResults.length})
           </h3>
@@ -321,8 +321,8 @@ export function AdminDashboard({
                   className={cn(
                     "rounded-full border px-4 py-2 text-sm font-medium transition-colors",
                     activeCat === c.id
-                      ? "border-gold bg-gold text-ink"
-                      : "border-ink/15 bg-white text-ink-muted hover:border-gold",
+                      ? "border-gold bg-gold text-night"
+                      : "border-ink/15 bg-surface text-ink-muted hover:border-gold",
                   )}
                 >
                   {c.label}
@@ -336,7 +336,7 @@ export function AdminDashboard({
           <p className="mt-6 mb-2 text-xs font-semibold uppercase tracking-wider text-ink-muted">
             ٢) الفولدر الفرعي
           </p>
-          <div className="rounded-2xl border border-ink/5 bg-white p-4 shadow-card">
+          <div className="rounded-2xl border border-ink/5 bg-surface p-4 shadow-card">
             <div className="flex flex-wrap gap-2">
               {catCollections.map((c) => {
                 const count = models.filter((m) => m.collectionId === c.id).length;
@@ -346,7 +346,7 @@ export function AdminDashboard({
                     key={c.id}
                     className={cn(
                       "flex items-center gap-1 rounded-full border py-1 ps-3 pe-1 transition-colors",
-                      on ? "border-gold bg-gold/10" : "border-ink/15 bg-white",
+                      on ? "border-gold bg-gold/10" : "border-ink/15 bg-surface",
                     )}
                   >
                     <button
@@ -361,7 +361,7 @@ export function AdminDashboard({
                       type="button"
                       onClick={() => renameCollection(c.id, c.name)}
                       aria-label="إعادة تسمية"
-                      className="inline-flex h-6 w-6 items-center justify-center rounded-full text-ink-muted hover:bg-ink/5 hover:text-ink"
+                      className="inline-flex h-6 w-6 items-center justify-center rounded-full text-ink-muted hover:bg-night/5 hover:text-night"
                     >
                       <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8">
                         <path d="M4 20h4L18 10l-4-4L4 16v4Z" strokeLinejoin="round" />
@@ -404,7 +404,7 @@ export function AdminDashboard({
                 type="button"
                 onClick={createCollection}
                 disabled={busy || !newCol.trim()}
-                className="shrink-0 rounded-xl bg-ink px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-ink-soft disabled:opacity-50"
+                className="shrink-0 rounded-xl bg-night px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-night-soft disabled:opacity-50"
               >
                 + إضافة
               </button>
@@ -416,11 +416,11 @@ export function AdminDashboard({
             ٣) الصور
           </p>
           {!activeCol ? (
-            <p className="rounded-2xl border border-dashed border-ink/15 bg-white py-10 text-center text-sm text-ink-muted">
+            <p className="rounded-2xl border border-dashed border-ink/15 bg-surface py-10 text-center text-sm text-ink-muted">
               اختر فولدراً فرعياً بالأعلى (أو أنشئ واحداً) لبدء رفع الصور بداخله.
             </p>
           ) : (
-            <div className="rounded-2xl border border-ink/5 bg-white p-5 shadow-card">
+            <div className="rounded-2xl border border-ink/5 bg-surface p-5 shadow-card">
               <div className="mb-3 flex items-center gap-2 text-sm">
                 <span className="text-ink-muted">الفولدر الحالي:</span>
                 <span className="font-semibold text-gold-dark">{activeCollection?.name}</span>
@@ -530,11 +530,11 @@ export function AdminDashboard({
       {/* Edit product details modal */}
       {editing ? (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/70 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-night/70 p-4 backdrop-blur-sm"
           onClick={() => setEditing(null)}
         >
           <div
-            className="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl"
+            className="w-full max-w-lg overflow-hidden rounded-2xl bg-surface shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center gap-4 border-b border-ink/10 p-5">
@@ -584,14 +584,14 @@ export function AdminDashboard({
               <button
                 type="button"
                 onClick={() => setEditing(null)}
-                className="rounded-full border border-ink/15 px-5 py-2 text-sm font-medium text-ink transition-colors hover:bg-ink/5"
+                className="rounded-full border border-ink/15 px-5 py-2 text-sm font-medium text-ink transition-colors hover:bg-night/5"
               >
                 إلغاء
               </button>
               <button
                 type="button"
                 onClick={saveEdit}
-                className="rounded-full bg-ink px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-gold hover:text-ink"
+                className="rounded-full bg-night px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-gold hover:text-night"
               >
                 حفظ
               </button>
@@ -617,7 +617,7 @@ function ModelCard({
   onRemove: () => void;
 }) {
   return (
-    <figure className="group relative overflow-hidden rounded-2xl border border-ink/5 bg-white shadow-card transition-shadow hover:shadow-card-hover">
+    <figure className="group relative overflow-hidden rounded-2xl border border-ink/5 bg-surface shadow-card transition-shadow hover:shadow-card-hover">
       <div className="relative aspect-square overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -632,7 +632,7 @@ function ModelCard({
             type="button"
             onClick={onEdit}
             aria-label="تعديل التفاصيل"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/95 text-ink shadow transition-colors hover:bg-gold hover:text-ink"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/95 text-night shadow transition-colors hover:bg-gold hover:text-night"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
               <path d="M4 20h4L18 10l-4-4L4 16v4Z" strokeLinejoin="round" />

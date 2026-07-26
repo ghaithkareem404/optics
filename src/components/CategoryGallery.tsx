@@ -97,7 +97,7 @@ export async function CategoryGallery({
                 <div className="mb-8 flex items-center gap-3">
                   <span className="h-8 w-1.5 rounded-full bg-gold" />
                   <h3 className="font-display text-2xl font-bold text-ink">{catLabel}</h3>
-                  <span className="rounded-full bg-ink/5 px-3 py-1 text-xs font-medium text-ink-muted">
+                  <span className="rounded-full bg-night/5 px-3 py-1 text-xs font-medium text-ink-muted">
                     {photos.length}
                   </span>
                 </div>

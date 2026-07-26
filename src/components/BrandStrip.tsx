@@ -30,7 +30,7 @@ export async function BrandStrip({ locale, dict }: { locale: Locale; dict: Dicti
   if (photos.length === 0) return null;
 
   return (
-    <section className="border-y border-ink/5 bg-white py-20">
+    <section className="border-y border-ink/5 bg-surface py-20">
       <Container>
         <SectionTitle title={dict.brandsSection.title} subtitle={dict.brandsSection.subtitle} />
       </Container>

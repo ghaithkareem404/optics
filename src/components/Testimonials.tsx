@@ -13,7 +13,7 @@ export function Testimonials({ locale, dict }: { locale: Locale; dict: Dictionar
           {testimonials.map((item) => (
             <figure
               key={item.id}
-              className="flex flex-col rounded-2xl border border-ink/5 bg-white p-6 shadow-card"
+              className="flex flex-col rounded-2xl border border-ink/5 bg-surface p-6 shadow-card"
             >
               <div className="flex gap-1 text-gold">
                 {Array.from({ length: item.rating }).map((_, i) => (

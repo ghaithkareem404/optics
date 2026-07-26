@@ -33,7 +33,7 @@ export function BrandMarquee({
               key={`${p.id}-${i}`}
               type="button"
               onClick={() => setIndex(i % photos.length)}
-              className="group/card me-5 w-52 shrink-0 overflow-hidden rounded-2xl border border-ink/5 bg-white shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card-hover"
+              className="group/card me-5 w-52 shrink-0 overflow-hidden rounded-2xl border border-ink/5 bg-surface shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card-hover"
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-cream">
                 {/* eslint-disable-next-line @next/next/no-img-element */}

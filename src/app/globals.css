@@ -7,6 +7,26 @@
     --font-sans: system-ui, -apple-system, "Segoe UI", Tahoma, "Helvetica Neue",
       Arial, "Noto Sans Arabic", sans-serif;
     --font-display: "Georgia", "Times New Roman", serif;
+
+    /* Light theme (day) — space-separated RGB channels for Tailwind alpha. */
+    --page: 255 255 255;
+    --surface: 255 255 255;
+    --cream: 236 243 242;
+    --ink: 14 14 14;
+    --ink-soft: 43 43 43;
+    --ink-muted: 107 107 107;
+    color-scheme: light;
+  }
+
+  .dark {
+    /* Dark theme (night). */
+    --page: 15 18 17;
+    --surface: 24 28 27;
+    --cream: 20 25 24;
+    --ink: 237 240 239;
+    --ink-soft: 205 210 209;
+    --ink-muted: 156 163 162;
+    color-scheme: dark;
   }
 
   html {
@@ -14,11 +34,12 @@
   }
 
   body {
-    @apply bg-white text-ink antialiased;
+    background-color: rgb(var(--page));
+    @apply text-ink antialiased;
     font-family: var(--font-sans);
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  /* Logical scroll gutter so RTL/LTR both behave. */
   ::selection {
     @apply bg-gold/30 text-ink;
   }

@@ -89,6 +89,26 @@
   "gallery": {
     "empty": "No images in this section yet."
   },
+  "chat": {
+    "title": "Z&O Assistant",
+    "status": "Online now",
+    "greeting": "Welcome to Z&O Optics 👓 How can I help you today?",
+    "placeholder": "Type your message…",
+    "hint": "Pick a question or type your message:",
+    "whatsapp": "Chat with us on WhatsApp",
+    "q": {
+      "hours": "Opening hours",
+      "location": "Location & branches",
+      "phone": "Phone number",
+      "brands": "Available brands",
+      "book": "Book an eye exam"
+    },
+    "a": {
+      "brands": "We are official agents for leading global brands such as Optiswiss, Acuvue, Bella and Swarovski. Browse the Brands section for the latest models.",
+      "book": "We'd be glad to arrange an eye exam for you. Reach us on WhatsApp or by phone and we'll set a convenient time.",
+      "fallback": "You can pick one of the buttons above, or message us directly on WhatsApp and we'll reply right away."
+    }
+  },
   "product": {
     "info": "Product info",
     "description": "Description",

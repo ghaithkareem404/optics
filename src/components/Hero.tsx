@@ -75,7 +75,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             <p className="mt-5 text-lg leading-relaxed text-ink-soft">{slides[index].text}</p>
             <Link
               href={`/${locale}/${slides[index].href}`}
-              className="mt-8 inline-flex items-center justify-center rounded-md bg-ink px-8 py-4 text-sm font-semibold text-white transition-colors hover:bg-gold hover:text-ink"
+              className="mt-8 inline-flex items-center justify-center rounded-md bg-night px-8 py-4 text-sm font-semibold text-white transition-colors hover:bg-gold hover:text-night"
             >
               {slides[index].cta}
             </Link>
@@ -87,7 +87,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           type="button"
           onClick={() => go(index - 1)}
           aria-label="Previous"
-          className="absolute top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-ink/70 text-white transition-colors hover:bg-ink ltr:left-4 rtl:right-4"
+          className="absolute top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-night/70 text-white transition-colors hover:bg-night ltr:left-4 rtl:right-4"
         >
           <svg viewBox="0 0 24 24" className="h-5 w-5 rtl:-scale-x-100" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="m15 6-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
@@ -97,7 +97,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           type="button"
           onClick={() => go(index + 1)}
           aria-label="Next"
-          className="absolute top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-ink/70 text-white transition-colors hover:bg-ink ltr:right-4 rtl:left-4"
+          className="absolute top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-night/70 text-white transition-colors hover:bg-night ltr:right-4 rtl:left-4"
         >
           <svg viewBox="0 0 24 24" className="h-5 w-5 rtl:-scale-x-100" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="m9 6 6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
@@ -114,7 +114,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               aria-label={`Slide ${i + 1}`}
               className={cn(
                 "h-2.5 rounded-full transition-all",
-                i === index ? "w-7 bg-gold" : "w-2.5 bg-ink/30 hover:bg-ink/50",
+                i === index ? "w-7 bg-gold" : "w-2.5 bg-night/30 hover:bg-night/50",
               )}
             />
           ))}

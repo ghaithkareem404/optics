@@ -27,7 +27,7 @@ export function HeroVideo({ locale, dict }: { locale: Locale; dict: Dictionary }
   }
 
   return (
-    <section className="relative min-h-[80vh] overflow-hidden bg-ink text-white">
+    <section className="relative min-h-[80vh] overflow-hidden bg-night text-white">
       {/* Background video */}
       <video
         ref={videoRef}
@@ -43,12 +43,12 @@ export function HeroVideo({ locale, dict }: { locale: Locale; dict: Dictionary }
       </video>
 
       {/* Readability overlays */}
-      <div className="absolute inset-0 bg-ink/45" />
+      <div className="absolute inset-0 bg-night/45" />
       <div
         className={
           "absolute inset-0 " +
           (locale === "ar" ? "bg-gradient-to-l" : "bg-gradient-to-r") +
-          " from-ink/90 via-ink/55 to-transparent"
+          " from-night/90 via-night/55 to-transparent"
         }
       />
 
@@ -65,7 +65,7 @@ export function HeroVideo({ locale, dict }: { locale: Locale; dict: Dictionary }
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href={`/${locale}/${slide.href}`}
-              className="inline-flex items-center justify-center rounded-md bg-gold px-8 py-4 text-sm font-semibold text-ink transition-colors hover:bg-gold-light"
+              className="inline-flex items-center justify-center rounded-md bg-gold px-8 py-4 text-sm font-semibold text-night transition-colors hover:bg-gold-light"
             >
               {slide.cta}
             </Link>
@@ -84,7 +84,7 @@ export function HeroVideo({ locale, dict }: { locale: Locale; dict: Dictionary }
         type="button"
         onClick={toggleSound}
         aria-label={muted ? "Unmute video" : "Mute video"}
-        className="absolute bottom-6 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-ink/60 text-white backdrop-blur transition-colors hover:border-gold hover:text-gold-light ltr:right-6 rtl:left-6"
+        className="absolute bottom-6 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-night/60 text-white backdrop-blur transition-colors hover:border-gold hover:text-gold-light ltr:right-6 rtl:left-6"
       >
         {muted ? (
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">

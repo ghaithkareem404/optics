@@ -52,13 +52,13 @@ export function SearchClient({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={labels.placeholder}
-          className="w-full rounded-full border border-ink/15 bg-white px-12 py-3.5 text-sm text-ink shadow-card outline-none focus:border-gold"
+          className="w-full rounded-full border border-ink/15 bg-surface px-12 py-3.5 text-sm text-ink shadow-card outline-none focus:border-gold"
         />
         {query ? (
           <button
             type="button"
             onClick={() => setQuery("")}
-            className="absolute top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink ltr:right-4 rtl:left-4"
+            className="absolute top-1/2 -translate-y-1/2 text-ink-muted hover:text-night ltr:right-4 rtl:left-4"
             aria-label="clear"
           >
             ✕
