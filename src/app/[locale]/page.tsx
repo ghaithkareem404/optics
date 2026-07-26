@@ -9,6 +9,9 @@ import { Testimonials } from "@/components/Testimonials";
 import { HoursBanner } from "@/components/HoursBanner";
 import { CTASection } from "@/components/CTASection";
 
+// Render fresh so newly uploaded images appear in the featured section.
+export const dynamic = "force-dynamic";
+
 export default async function HomePage({ params }: { params: { locale: string } }) {
   if (!isLocale(params.locale)) notFound();
   const dict = await getDictionary(params.locale);
