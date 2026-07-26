@@ -21,6 +21,8 @@ interface Model {
   categoryId: string;
   collectionId: string;
   name: string;
+  subtitle?: string;
+  description?: string;
   pathname: string;
   url: string;
   createdAt: number;
@@ -42,6 +44,9 @@ export function AdminDashboard({
   const [activeCol, setActiveCol] = useState<string | null>(null);
   const [newCol, setNewCol] = useState("");
   const [imgName, setImgName] = useState("");
+  const [imgSubtitle, setImgSubtitle] = useState("");
+  const [imgDescription, setImgDescription] = useState("");
+  const [editing, setEditing] = useState<Model | null>(null);
   const [query, setQuery] = useState("");
   const [dragging, setDragging] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -129,11 +134,16 @@ export function AdminDashboard({
     }
   }
 
-  async function uploadOne(file: File, name: string): Promise<boolean> {
+  async function uploadOne(
+    file: File,
+    meta: { name: string; subtitle: string; description: string },
+  ): Promise<boolean> {
     const form = new FormData();
     form.append("categoryId", activeCat);
     form.append("collectionId", activeCol as string);
-    form.append("name", name);
+    form.append("name", meta.name);
+    form.append("subtitle", meta.subtitle);
+    form.append("description", meta.description);
     form.append("image", file);
     const res = await fetch("/api/admin/models", { method: "POST", body: form });
     const data = await res.json().catch(() => ({}));
@@ -161,9 +171,12 @@ export function AdminDashboard({
     let failed = 0;
     try {
       for (let i = 0; i < images.length; i++) {
-        // A single-image upload keeps the typed name; batches upload untitled.
-        const name = images.length === 1 ? imgName : "";
-        const success = await uploadOne(images[i], name);
+        // A single-image upload keeps the typed details; batches upload untitled.
+        const meta =
+          images.length === 1
+            ? { name: imgName, subtitle: imgSubtitle, description: imgDescription }
+            : { name: "", subtitle: "", description: "" };
+        const success = await uploadOne(images[i], meta);
         if (success) ok++;
         else failed++;
         setMsg({ kind: "ok", text: `تم رفع ${ok} من ${images.length}…` });
@@ -173,7 +186,11 @@ export function AdminDashboard({
       setBusy(false);
       return;
     }
-    if (ok > 0) setImgName("");
+    if (ok > 0) {
+      setImgName("");
+      setImgSubtitle("");
+      setImgDescription("");
+    }
     const parts = [`تم رفع ${ok} صورة`];
     if (failed) parts.push(`فشل ${failed}`);
     if (skipped) parts.push(`تم تجاهل ${skipped} ملف غير صورة`);
@@ -181,17 +198,23 @@ export function AdminDashboard({
     setBusy(false);
   }
 
-  async function renameModelName(id: string, current: string) {
-    const name = prompt("اسم الصورة (اتركه فارغاً لإزالة العنوان):", current);
-    if (name === null) return;
-    const trimmed = name.trim();
-    const res = await fetch(`/api/admin/models/${id}`, {
+  async function saveEdit() {
+    if (!editing) return;
+    const patch = {
+      name: editing.name?.trim() ?? "",
+      subtitle: editing.subtitle?.trim() ?? "",
+      description: editing.description?.trim() ?? "",
+    };
+    const res = await fetch(`/api/admin/models/${editing.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: trimmed }),
+      body: JSON.stringify(patch),
     });
     if (res.ok) {
-      setModels((prev) => prev.map((m) => (m.id === id ? { ...m, name: trimmed } : m)));
+      setModels((prev) => prev.map((m) => (m.id === editing.id ? { ...m, ...patch } : m)));
+      setEditing(null);
+    } else {
+      setMsg({ kind: "err", text: "تعذّر حفظ التعديلات." });
     }
   }
 
@@ -274,7 +297,7 @@ export function AdminDashboard({
                   src={`/api/media/${m.pathname}`}
                   name={m.name}
                   subtitle={`${catLabel(m.categoryId)} · ${colName(m.collectionId)}`}
-                  onRename={() => renameModelName(m.id, m.name)}
+                  onEdit={() => setEditing(m)}
                   onRemove={() => removeModel(m.id)}
                 />
               ))}
@@ -402,17 +425,28 @@ export function AdminDashboard({
                 <span className="text-ink-muted">الفولدر الحالي:</span>
                 <span className="font-semibold text-gold-dark">{activeCollection?.name}</span>
               </div>
-              <label className="mb-1 block text-xs font-medium text-ink-muted">
-                اسم الصورة{" "}
-                <span className="font-normal opacity-70">
-                  (اختياري — يظهر كعنوان تحت الصورة، ويُستخدم عند رفع صورة واحدة)
-                </span>
-              </label>
+              <p className="mb-2 text-xs text-ink-muted">
+                كل الحقول <span className="font-semibold">اختيارية</span> — وتُستخدم عند رفع
+                <span className="font-semibold"> صورة واحدة</span>. يمكنك دائماً تعديلها لاحقاً من زر
+                التعديل على الصورة.
+              </p>
               <input
-                className={cn(field, "mb-3")}
-                placeholder="مثال: إطار Bella الذهبي"
+                className={cn(field, "mb-2")}
+                placeholder="اسم المنتج (عنوان كبير) — مثال: عدسات بيلا اليومية Venus"
                 value={imgName}
                 onChange={(e) => setImgName(e.target.value)}
+              />
+              <input
+                className={cn(field, "mb-2")}
+                placeholder="وصف قصير سطر واحد — مثال: عدسات ملونة يومية بإطلالة طبيعية"
+                value={imgSubtitle}
+                onChange={(e) => setImgSubtitle(e.target.value)}
+              />
+              <textarea
+                className={cn(field, "mb-3 min-h-[80px] resize-y")}
+                placeholder="الوصف الكامل للمنتج (يظهر في صفحة المنتج)"
+                value={imgDescription}
+                onChange={(e) => setImgDescription(e.target.value)}
               />
               <div
                 onDragOver={(e) => {
@@ -480,7 +514,8 @@ export function AdminDashboard({
                         key={m.id}
                         src={`/api/media/${m.pathname}`}
                         name={m.name}
-                        onRename={() => renameModelName(m.id, m.name)}
+                        subtitle={m.subtitle}
+                        onEdit={() => setEditing(m)}
                         onRemove={() => removeModel(m.id)}
                       />
                     ))}
@@ -491,6 +526,79 @@ export function AdminDashboard({
           )}
         </>
       )}
+
+      {/* Edit product details modal */}
+      {editing ? (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/70 p-4 backdrop-blur-sm"
+          onClick={() => setEditing(null)}
+        >
+          <div
+            className="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-4 border-b border-ink/10 p-5">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`/api/media/${editing.pathname}`}
+                alt=""
+                className="h-16 w-16 rounded-xl object-cover"
+              />
+              <div>
+                <h3 className="font-display text-lg font-bold text-ink">تفاصيل المنتج</h3>
+                <p className="text-xs text-ink-muted">كل الحقول اختيارية.</p>
+              </div>
+            </div>
+            <div className="space-y-3 p-5">
+              <div>
+                <label className="mb-1 block text-xs font-medium text-ink-muted">
+                  اسم المنتج (عنوان)
+                </label>
+                <input
+                  className={field}
+                  placeholder="مثال: عدسات بيلا اليومية Venus"
+                  value={editing.name ?? ""}
+                  onChange={(e) => setEditing({ ...editing, name: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-xs font-medium text-ink-muted">وصف قصير</label>
+                <input
+                  className={field}
+                  placeholder="سطر واحد يظهر تحت العنوان"
+                  value={editing.subtitle ?? ""}
+                  onChange={(e) => setEditing({ ...editing, subtitle: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-xs font-medium text-ink-muted">الوصف الكامل</label>
+                <textarea
+                  className={cn(field, "min-h-[120px] resize-y")}
+                  placeholder="الوصف التفصيلي للمنتج"
+                  value={editing.description ?? ""}
+                  onChange={(e) => setEditing({ ...editing, description: e.target.value })}
+                />
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 border-t border-ink/10 p-4">
+              <button
+                type="button"
+                onClick={() => setEditing(null)}
+                className="rounded-full border border-ink/15 px-5 py-2 text-sm font-medium text-ink transition-colors hover:bg-ink/5"
+              >
+                إلغاء
+              </button>
+              <button
+                type="button"
+                onClick={saveEdit}
+                className="rounded-full bg-ink px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-gold hover:text-ink"
+              >
+                حفظ
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -499,13 +607,13 @@ function ModelCard({
   src,
   name,
   subtitle,
-  onRename,
+  onEdit,
   onRemove,
 }: {
   src: string;
   name: string;
   subtitle?: string;
-  onRename: () => void;
+  onEdit: () => void;
   onRemove: () => void;
 }) {
   return (
@@ -522,8 +630,8 @@ function ModelCard({
         <div className="absolute inset-x-0 top-0 flex justify-end gap-1.5 bg-gradient-to-b from-black/45 to-transparent p-2 opacity-0 transition-opacity group-hover:opacity-100">
           <button
             type="button"
-            onClick={onRename}
-            aria-label="تعديل الاسم"
+            onClick={onEdit}
+            aria-label="تعديل التفاصيل"
             className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/95 text-ink shadow transition-colors hover:bg-gold hover:text-ink"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -549,10 +657,10 @@ function ModelCard({
         ) : (
           <button
             type="button"
-            onClick={onRename}
+            onClick={onEdit}
             className="text-xs italic text-ink-muted/70 underline decoration-dotted underline-offset-2 hover:text-gold-dark"
           >
-            + أضف اسماً
+            + أضف التفاصيل
           </button>
         )}
         {subtitle ? <p className="mt-0.5 truncate text-[11px] text-ink-muted">{subtitle}</p> : null}

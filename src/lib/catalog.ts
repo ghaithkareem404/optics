@@ -16,7 +16,12 @@ export interface ModelItem {
   categoryId: string;
   /** The sub-folder this image belongs to (empty for legacy items). */
   collectionId: string;
+  /** Product title (optional). */
   name: string;
+  /** Short one-line description shown under the title (optional). */
+  subtitle?: string;
+  /** Long description shown in the product view (optional). */
+  description?: string;
   /** Blob pathname; images are served publicly through /api/media/<pathname>. */
   pathname: string;
   url: string;
@@ -117,6 +122,8 @@ export async function addModel(input: {
   categoryId: string;
   collectionId: string;
   name: string;
+  subtitle?: string;
+  description?: string;
   file: File;
 }): Promise<ModelItem> {
   const safeName = input.file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
@@ -129,6 +136,8 @@ export async function addModel(input: {
     categoryId: input.categoryId,
     collectionId: input.collectionId,
     name: input.name || "",
+    subtitle: input.subtitle || "",
+    description: input.description || "",
     pathname: blob.pathname,
     url: blob.url,
     createdAt: Date.now(),
@@ -139,11 +148,16 @@ export async function addModel(input: {
   return item;
 }
 
-export async function renameModel(id: string, name: string): Promise<boolean> {
+export async function updateModel(
+  id: string,
+  patch: { name?: string; subtitle?: string; description?: string },
+): Promise<boolean> {
   const catalog = await getCatalog();
   const item = catalog.models.find((m) => m.id === id);
   if (!item) return false;
-  item.name = name;
+  if (patch.name !== undefined) item.name = patch.name;
+  if (patch.subtitle !== undefined) item.subtitle = patch.subtitle;
+  if (patch.description !== undefined) item.description = patch.description;
   await saveCatalog(catalog);
   return true;
 }

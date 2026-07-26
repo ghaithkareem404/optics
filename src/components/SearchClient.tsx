@@ -1,11 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { PhotoGrid } from "./PhotoGrid";
+import { PhotoGrid, type PhotoLabels } from "./PhotoGrid";
 
 export interface SearchItem {
   id: string;
   name: string;
+  subtitle?: string;
+  description?: string;
   folder: string;
   category: string;
   src: string;
@@ -14,9 +16,13 @@ export interface SearchItem {
 export function SearchClient({
   items,
   labels,
+  productLabels,
+  whatsapp,
 }: {
   items: SearchItem[];
   labels: { placeholder: string; empty: string; prompt: string; results: string };
+  productLabels: PhotoLabels;
+  whatsapp?: string;
 }) {
   const [query, setQuery] = useState("");
 
@@ -24,7 +30,7 @@ export function SearchClient({
   const results = useMemo(() => {
     if (!q) return [];
     return items.filter((it) =>
-      [it.name, it.folder, it.category].join(" ").toLowerCase().includes(q),
+      [it.name, it.subtitle, it.folder, it.category].join(" ").toLowerCase().includes(q),
     );
   }, [q, items]);
 
@@ -75,8 +81,13 @@ export function SearchClient({
                 id: it.id,
                 src: it.src,
                 name: it.name,
-                meta: it.folder ? `${it.category} · ${it.folder}` : it.category,
+                subtitle: it.subtitle,
+                description: it.description,
+                category: it.category,
+                folder: it.folder,
               }))}
+              labels={productLabels}
+              whatsapp={whatsapp}
             />
           </>
         )}
