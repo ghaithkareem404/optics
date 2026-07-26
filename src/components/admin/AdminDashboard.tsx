@@ -4,22 +4,21 @@ import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-interface BrandOption {
+interface CategoryOption {
   id: string;
   label: string;
-  name: string;
 }
 
 interface Collection {
   id: string;
-  brandId: string;
+  categoryId: string;
   name: string;
   createdAt: number;
 }
 
 interface Model {
   id: string;
-  brandId: string;
+  categoryId: string;
   collectionId: string;
   name: string;
   pathname: string;
@@ -28,38 +27,55 @@ interface Model {
 }
 
 export function AdminDashboard({
-  brands,
+  categories,
   initialCollections,
   initialModels,
 }: {
-  brands: BrandOption[];
+  categories: CategoryOption[];
   initialCollections: Collection[];
   initialModels: Model[];
 }) {
   const router = useRouter();
   const [collections, setCollections] = useState<Collection[]>(initialCollections);
   const [models, setModels] = useState<Model[]>(initialModels);
-  const [activeBrand, setActiveBrand] = useState(brands[0]?.id ?? "");
+  const [activeCat, setActiveCat] = useState(categories[0]?.id ?? "");
   const [activeCol, setActiveCol] = useState<string | null>(null);
   const [newCol, setNewCol] = useState("");
   const [imgName, setImgName] = useState("");
+  const [query, setQuery] = useState("");
   const [dragging, setDragging] = useState(false);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const brandCollections = useMemo(
-    () => collections.filter((c) => c.brandId === activeBrand),
-    [collections, activeBrand],
+  const catCollections = useMemo(
+    () => collections.filter((c) => c.categoryId === activeCat),
+    [collections, activeCat],
   );
   const colModels = useMemo(
     () => models.filter((m) => m.collectionId === activeCol),
     [models, activeCol],
   );
-  const activeCollection = brandCollections.find((c) => c.id === activeCol) || null;
+  const activeCollection = catCollections.find((c) => c.id === activeCol) || null;
 
-  function pickBrand(id: string) {
-    setActiveBrand(id);
+  const colName = (id: string) => collections.find((c) => c.id === id)?.name ?? "";
+  const catLabel = (id: string) => categories.find((c) => c.id === id)?.label ?? id;
+
+  // Global search across every category/folder/name.
+  const searchResults = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    return models.filter((m) => {
+      const hay = [m.name, colName(m.collectionId), catLabel(m.categoryId)]
+        .join(" ")
+        .toLowerCase();
+      return hay.includes(q);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, models, collections, categories]);
+
+  function pickCat(id: string) {
+    setActiveCat(id);
     setActiveCol(null);
     setMsg(null);
   }
@@ -73,7 +89,7 @@ export function AdminDashboard({
       const res = await fetch("/api/admin/collections", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ brandId: activeBrand, name }),
+        body: JSON.stringify({ categoryId: activeCat, name }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.item) {
@@ -81,7 +97,7 @@ export function AdminDashboard({
         setActiveCol(data.item.id);
         setNewCol("");
       } else {
-        setMsg({ kind: "err", text: "تعذّر إنشاء التصنيف." });
+        setMsg({ kind: "err", text: "تعذّر إنشاء الفولدر." });
       }
     } finally {
       setBusy(false);
@@ -89,7 +105,7 @@ export function AdminDashboard({
   }
 
   async function renameCollection(id: string, current: string) {
-    const name = prompt("الاسم الجديد للتصنيف:", current);
+    const name = prompt("الاسم الجديد للفولدر:", current);
     if (name === null) return;
     const trimmed = name.trim();
     if (!trimmed) return;
@@ -104,7 +120,7 @@ export function AdminDashboard({
   }
 
   async function removeCollection(id: string) {
-    if (!confirm("حذف هذا التصنيف وكل صوره نهائياً؟")) return;
+    if (!confirm("حذف هذا الفولدر وكل صوره نهائياً؟")) return;
     const res = await fetch(`/api/admin/collections/${id}`, { method: "DELETE" });
     if (res.ok) {
       setCollections((prev) => prev.filter((c) => c.id !== id));
@@ -123,7 +139,7 @@ export function AdminDashboard({
     setMsg(null);
     try {
       const form = new FormData();
-      form.append("brandId", activeBrand);
+      form.append("categoryId", activeCat);
       form.append("collectionId", activeCol);
       form.append("name", imgName);
       form.append("image", file);
@@ -166,9 +182,9 @@ export function AdminDashboard({
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-display text-2xl font-bold text-ink">إدارة الموديلات</h1>
+          <h1 className="font-display text-2xl font-bold text-ink">إدارة الصور</h1>
           <p className="text-sm text-ink-muted">
-            اختر البراند، أنشئ تصنيفاً فرعياً، ثم ارفع صوره بداخله.
+            اختر التبويب، أنشئ فولدراً فرعياً، ثم ارفع صوره وسمِّ كل صورة.
           </p>
         </div>
         <button
@@ -180,207 +196,286 @@ export function AdminDashboard({
         </button>
       </div>
 
-      {/* Step 1: brand */}
-      <p className="mt-6 mb-2 text-xs font-semibold uppercase tracking-wider text-ink-muted">
-        ١) البراند
-      </p>
-      <div className="flex flex-wrap gap-2">
-        {brands.map((b) => {
-          const count = models.filter((m) => m.brandId === b.id).length;
-          return (
-            <button
-              key={b.id}
-              type="button"
-              onClick={() => pickBrand(b.id)}
-              className={cn(
-                "rounded-full border px-4 py-2 text-sm font-medium transition-colors",
-                activeBrand === b.id
-                  ? "border-gold bg-gold text-ink"
-                  : "border-ink/15 bg-white text-ink-muted hover:border-gold",
-              )}
-            >
-              {b.label}
-              <span className="ms-1 text-xs opacity-70">({count})</span>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Step 2: collections */}
-      <p className="mt-6 mb-2 text-xs font-semibold uppercase tracking-wider text-ink-muted">
-        ٢) التصنيف الفرعي
-      </p>
-      <div className="rounded-2xl border border-ink/5 bg-white p-4 shadow-card">
-        <div className="flex flex-wrap gap-2">
-          {brandCollections.map((c) => {
-            const count = models.filter((m) => m.collectionId === c.id).length;
-            const on = activeCol === c.id;
-            return (
-              <div
-                key={c.id}
-                className={cn(
-                  "flex items-center gap-1 rounded-full border py-1 ps-3 pe-1 transition-colors",
-                  on ? "border-gold bg-gold/10" : "border-ink/15 bg-white",
-                )}
-              >
-                <button
-                  type="button"
-                  onClick={() => setActiveCol(c.id)}
-                  className={cn("text-sm font-medium", on ? "text-gold-dark" : "text-ink")}
-                >
-                  {c.name}
-                  <span className="ms-1 text-xs opacity-60">({count})</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => renameCollection(c.id, c.name)}
-                  aria-label="إعادة تسمية"
-                  className="inline-flex h-6 w-6 items-center justify-center rounded-full text-ink-muted hover:bg-ink/5 hover:text-ink"
-                >
-                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M4 20h4L18 10l-4-4L4 16v4Z" strokeLinejoin="round" />
-                    <path d="m14 6 4 4" />
-                  </svg>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => removeCollection(c.id)}
-                  aria-label="حذف التصنيف"
-                  className="inline-flex h-6 w-6 items-center justify-center rounded-full text-red-500 hover:bg-red-50"
-                >
-                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M4 7h16M9 7V5h6v2m-8 0 1 13h8l1-13" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-              </div>
-            );
-          })}
-          {brandCollections.length === 0 ? (
-            <span className="py-1 text-sm text-ink-muted">لا توجد تصنيفات بعد — أنشئ واحداً.</span>
-          ) : null}
-        </div>
-
-        {/* add collection */}
-        <div className="mt-3 flex gap-2">
-          <input
-            className={field}
-            placeholder="اسم تصنيف جديد (مثال: نظارات رجالية 2026)"
-            value={newCol}
-            onChange={(e) => setNewCol(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                createCollection();
-              }
-            }}
-          />
+      {/* Search */}
+      <div className="relative mt-6">
+        <svg
+          viewBox="0 0 24 24"
+          className="pointer-events-none absolute top-1/2 h-5 w-5 -translate-y-1/2 text-ink-muted ltr:left-3 rtl:right-3"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+        >
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-3.5-3.5" strokeLinecap="round" />
+        </svg>
+        <input
+          className={cn(field, "ps-10")}
+          placeholder="ابحث باسم الصورة أو الفولدر أو البراند…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        {query ? (
           <button
             type="button"
-            onClick={createCollection}
-            disabled={busy || !newCol.trim()}
-            className="shrink-0 rounded-xl bg-ink px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-ink-soft disabled:opacity-50"
+            onClick={() => setQuery("")}
+            className="absolute top-1/2 -translate-y-1/2 text-sm text-ink-muted hover:text-ink ltr:right-3 rtl:left-3"
           >
-            + إضافة
+            ✕
           </button>
-        </div>
+        ) : null}
       </div>
 
-      {/* Step 3: images inside the selected collection */}
-      <p className="mt-6 mb-2 text-xs font-semibold uppercase tracking-wider text-ink-muted">
-        ٣) الصور
-      </p>
-      {!activeCol ? (
-        <p className="rounded-2xl border border-dashed border-ink/15 bg-white py-10 text-center text-sm text-ink-muted">
-          اختر تصنيفاً فرعياً بالأعلى (أو أنشئ واحداً) لبدء رفع الصور بداخله.
-        </p>
+      {query.trim() ? (
+        <div className="mt-4 rounded-2xl border border-ink/5 bg-white p-5 shadow-card">
+          <h3 className="mb-3 text-sm font-semibold text-ink">
+            نتائج البحث ({searchResults.length})
+          </h3>
+          {searchResults.length === 0 ? (
+            <p className="rounded-xl border border-dashed border-ink/15 py-8 text-center text-sm text-ink-muted">
+              لا توجد صور مطابقة لـ «{query}».
+            </p>
+          ) : (
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              {searchResults.map((m) => (
+                <div
+                  key={m.id}
+                  className="group relative overflow-hidden rounded-xl border border-ink/5 bg-white shadow-card"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={`/api/media/${m.pathname}`}
+                    alt={m.name || "model"}
+                    className="aspect-square w-full object-cover"
+                    loading="lazy"
+                  />
+                  <div className="px-3 py-2">
+                    {m.name ? (
+                      <p className="truncate text-xs font-medium text-ink">{m.name}</p>
+                    ) : null}
+                    <p className="truncate text-[11px] text-ink-muted">
+                      {catLabel(m.categoryId)} · {colName(m.collectionId)}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => removeModel(m.id)}
+                    aria-label="حذف"
+                    className="absolute top-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-red-600 opacity-0 shadow transition-opacity hover:bg-red-600 hover:text-white group-hover:opacity-100 ltr:right-2 rtl:left-2"
+                  >
+                    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
+                      <path d="M4 7h16M9 7V5h6v2m-8 0 1 13h8l1-13" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       ) : (
-        <div className="rounded-2xl border border-ink/5 bg-white p-5 shadow-card">
-          <div className="mb-3 flex items-center gap-2 text-sm">
-            <span className="text-ink-muted">التصنيف الحالي:</span>
-            <span className="font-semibold text-gold-dark">{activeCollection?.name}</span>
+        <>
+          {/* Step 1: category (header tabs) */}
+          <p className="mt-6 mb-2 text-xs font-semibold uppercase tracking-wider text-ink-muted">
+            ١) التبويب
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {categories.map((c) => {
+              const count = models.filter((m) => m.categoryId === c.id).length;
+              return (
+                <button
+                  key={c.id}
+                  type="button"
+                  onClick={() => pickCat(c.id)}
+                  className={cn(
+                    "rounded-full border px-4 py-2 text-sm font-medium transition-colors",
+                    activeCat === c.id
+                      ? "border-gold bg-gold text-ink"
+                      : "border-ink/15 bg-white text-ink-muted hover:border-gold",
+                  )}
+                >
+                  {c.label}
+                  <span className="ms-1 text-xs opacity-70">({count})</span>
+                </button>
+              );
+            })}
           </div>
-          <input
-            className={cn(field, "mb-3")}
-            placeholder="اسم الصورة/الموديل (اختياري)"
-            value={imgName}
-            onChange={(e) => setImgName(e.target.value)}
-          />
-          <div
-            onDragOver={(e) => {
-              e.preventDefault();
-              setDragging(true);
-            }}
-            onDragLeave={() => setDragging(false)}
-            onDrop={(e) => {
-              e.preventDefault();
-              setDragging(false);
-              const f = e.dataTransfer.files?.[0];
-              if (f) upload(f);
-            }}
-            onClick={() => inputRef.current?.click()}
-            className={cn(
-              "flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-6 py-10 text-center transition-colors",
-              dragging ? "border-gold bg-gold/5" : "border-ink/15 hover:border-gold/60",
-            )}
-          >
-            <svg viewBox="0 0 24 24" className="h-8 w-8 text-gold" fill="none" stroke="currentColor" strokeWidth="1.6">
-              <path d="M12 16V4m0 0 4 4m-4-4-4 4" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" strokeLinecap="round" />
-            </svg>
-            <p className="mt-3 text-sm font-medium text-ink">
-              {busy ? "جارٍ الرفع…" : "اسحب الصورة هنا أو اضغط للاختيار"}
-            </p>
-            <p className="mt-1 text-xs text-ink-muted">JPG / PNG / WEBP — حتى 8MB</p>
-            <input
-              ref={inputRef}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                if (f) upload(f);
-                e.target.value = "";
-              }}
-            />
-          </div>
-          {msg ? (
-            <p className={cn("mt-3 text-sm font-medium", msg.kind === "ok" ? "text-green-700" : "text-red-600")}>
-              {msg.text}
-            </p>
-          ) : null}
 
-          {/* images grid */}
-          <div className="mt-5">
-            <h3 className="mb-3 text-sm font-semibold text-ink">
-              الصور ({colModels.length})
-            </h3>
-            {colModels.length === 0 ? (
-              <p className="rounded-xl border border-dashed border-ink/15 py-8 text-center text-sm text-ink-muted">
-                لا توجد صور في هذا التصنيف بعد.
-              </p>
-            ) : (
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                {colModels.map((m) => (
-                  <div key={m.id} className="group relative overflow-hidden rounded-xl border border-ink/5 bg-white shadow-card">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={`/api/media/${m.pathname}`} alt={m.name || "model"} className="aspect-square w-full object-cover" loading="lazy" />
-                    {m.name ? <p className="truncate px-3 py-2 text-xs font-medium text-ink">{m.name}</p> : null}
+          {/* Step 2: sub-folders */}
+          <p className="mt-6 mb-2 text-xs font-semibold uppercase tracking-wider text-ink-muted">
+            ٢) الفولدر الفرعي
+          </p>
+          <div className="rounded-2xl border border-ink/5 bg-white p-4 shadow-card">
+            <div className="flex flex-wrap gap-2">
+              {catCollections.map((c) => {
+                const count = models.filter((m) => m.collectionId === c.id).length;
+                const on = activeCol === c.id;
+                return (
+                  <div
+                    key={c.id}
+                    className={cn(
+                      "flex items-center gap-1 rounded-full border py-1 ps-3 pe-1 transition-colors",
+                      on ? "border-gold bg-gold/10" : "border-ink/15 bg-white",
+                    )}
+                  >
                     <button
                       type="button"
-                      onClick={() => removeModel(m.id)}
-                      aria-label="حذف"
-                      className="absolute top-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-red-600 opacity-0 shadow transition-opacity hover:bg-red-600 hover:text-white group-hover:opacity-100 ltr:right-2 rtl:left-2"
+                      onClick={() => setActiveCol(c.id)}
+                      className={cn("text-sm font-medium", on ? "text-gold-dark" : "text-ink")}
                     >
-                      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
+                      {c.name}
+                      <span className="ms-1 text-xs opacity-60">({count})</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => renameCollection(c.id, c.name)}
+                      aria-label="إعادة تسمية"
+                      className="inline-flex h-6 w-6 items-center justify-center rounded-full text-ink-muted hover:bg-ink/5 hover:text-ink"
+                    >
+                      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8">
+                        <path d="M4 20h4L18 10l-4-4L4 16v4Z" strokeLinejoin="round" />
+                        <path d="m14 6 4 4" />
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => removeCollection(c.id)}
+                      aria-label="حذف الفولدر"
+                      className="inline-flex h-6 w-6 items-center justify-center rounded-full text-red-500 hover:bg-red-50"
+                    >
+                      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8">
                         <path d="M4 7h16M9 7V5h6v2m-8 0 1 13h8l1-13" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </button>
                   </div>
-                ))}
-              </div>
-            )}
+                );
+              })}
+              {catCollections.length === 0 ? (
+                <span className="py-1 text-sm text-ink-muted">لا توجد فولدرات بعد — أنشئ واحداً.</span>
+              ) : null}
+            </div>
+
+            {/* add sub-folder */}
+            <div className="mt-3 flex gap-2">
+              <input
+                className={field}
+                placeholder="اسم فولدر جديد (مثال: نظارات رجالية 2026)"
+                value={newCol}
+                onChange={(e) => setNewCol(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    createCollection();
+                  }
+                }}
+              />
+              <button
+                type="button"
+                onClick={createCollection}
+                disabled={busy || !newCol.trim()}
+                className="shrink-0 rounded-xl bg-ink px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-ink-soft disabled:opacity-50"
+              >
+                + إضافة
+              </button>
+            </div>
           </div>
-        </div>
+
+          {/* Step 3: images inside the selected folder */}
+          <p className="mt-6 mb-2 text-xs font-semibold uppercase tracking-wider text-ink-muted">
+            ٣) الصور
+          </p>
+          {!activeCol ? (
+            <p className="rounded-2xl border border-dashed border-ink/15 bg-white py-10 text-center text-sm text-ink-muted">
+              اختر فولدراً فرعياً بالأعلى (أو أنشئ واحداً) لبدء رفع الصور بداخله.
+            </p>
+          ) : (
+            <div className="rounded-2xl border border-ink/5 bg-white p-5 shadow-card">
+              <div className="mb-3 flex items-center gap-2 text-sm">
+                <span className="text-ink-muted">الفولدر الحالي:</span>
+                <span className="font-semibold text-gold-dark">{activeCollection?.name}</span>
+              </div>
+              <input
+                className={cn(field, "mb-3")}
+                placeholder="اسم الصورة (يظهر كعنوان تحتها)"
+                value={imgName}
+                onChange={(e) => setImgName(e.target.value)}
+              />
+              <div
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setDragging(true);
+                }}
+                onDragLeave={() => setDragging(false)}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  setDragging(false);
+                  const f = e.dataTransfer.files?.[0];
+                  if (f) upload(f);
+                }}
+                onClick={() => inputRef.current?.click()}
+                className={cn(
+                  "flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-6 py-10 text-center transition-colors",
+                  dragging ? "border-gold bg-gold/5" : "border-ink/15 hover:border-gold/60",
+                )}
+              >
+                <svg viewBox="0 0 24 24" className="h-8 w-8 text-gold" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <path d="M12 16V4m0 0 4 4m-4-4-4 4" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" strokeLinecap="round" />
+                </svg>
+                <p className="mt-3 text-sm font-medium text-ink">
+                  {busy ? "جارٍ الرفع…" : "اسحب الصورة هنا أو اضغط للاختيار"}
+                </p>
+                <p className="mt-1 text-xs text-ink-muted">JPG / PNG / WEBP — حتى 8MB</p>
+                <input
+                  ref={inputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (f) upload(f);
+                    e.target.value = "";
+                  }}
+                />
+              </div>
+              {msg ? (
+                <p className={cn("mt-3 text-sm font-medium", msg.kind === "ok" ? "text-green-700" : "text-red-600")}>
+                  {msg.text}
+                </p>
+              ) : null}
+
+              {/* images grid */}
+              <div className="mt-5">
+                <h3 className="mb-3 text-sm font-semibold text-ink">
+                  الصور ({colModels.length})
+                </h3>
+                {colModels.length === 0 ? (
+                  <p className="rounded-xl border border-dashed border-ink/15 py-8 text-center text-sm text-ink-muted">
+                    لا توجد صور في هذا الفولدر بعد.
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                    {colModels.map((m) => (
+                      <div key={m.id} className="group relative overflow-hidden rounded-xl border border-ink/5 bg-white shadow-card">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={`/api/media/${m.pathname}`} alt={m.name || "model"} className="aspect-square w-full object-cover" loading="lazy" />
+                        {m.name ? <p className="truncate px-3 py-2 text-xs font-medium text-ink">{m.name}</p> : null}
+                        <button
+                          type="button"
+                          onClick={() => removeModel(m.id)}
+                          aria-label="حذف"
+                          className="absolute top-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-red-600 opacity-0 shadow transition-opacity hover:bg-red-600 hover:text-white group-hover:opacity-100 ltr:right-2 rtl:left-2"
+                        >
+                          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
+                            <path d="M4 7h16M9 7V5h6v2m-8 0 1 13h8l1-13" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

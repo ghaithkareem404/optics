@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { isAuthed } from "@/lib/auth";
 import { getCatalog } from "@/lib/catalog";
-import { brands } from "@/data/brands";
+import { categories } from "@/data/categories";
 import { Container } from "@/components/ui";
 import { LoginForm } from "@/components/admin/LoginForm";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
@@ -25,13 +25,13 @@ export default async function AdminPage() {
   }
 
   const catalog = await getCatalog();
-  const brandOptions = brands.map((b) => ({ id: b.id, label: b.note.ar, name: b.name }));
+  const categoryOptions = categories.map((c) => ({ id: c.id, label: c.ar }));
 
   return (
     <section className="min-h-[70vh] bg-cream py-12">
       <Container>
         <AdminDashboard
-          brands={brandOptions}
+          categories={categoryOptions}
           initialCollections={catalog.collections}
           initialModels={catalog.models}
         />

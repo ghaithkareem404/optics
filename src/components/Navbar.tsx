@@ -34,10 +34,10 @@ export function Navbar({
     { href: `/${locale}`, label: nav.home },
     { href: `/${locale}/about`, label: nav.about },
     { href: `/${locale}/services`, label: nav.services },
-    { href: `/${locale}/products`, label: nav.optical },
-    { href: `/${locale}/products`, label: nav.contactLenses },
-    { href: `/${locale}/products`, label: nav.brands },
-    { href: `/${locale}/products`, label: nav.accessories },
+    { href: `/${locale}/category/optical`, label: nav.optical },
+    { href: `/${locale}/category/contact-lenses`, label: nav.contactLenses },
+    { href: `/${locale}/category/brands`, label: nav.brands },
+    { href: `/${locale}/category/accessories`, label: nav.accessories },
     { href: `/${locale}/contact`, label: nav.contact },
   ];
 
@@ -96,16 +96,16 @@ export function Navbar({
             </svg>
           </Link>
 
-          <button
-            type="button"
-            aria-label="Search"
+          <Link
+            href={`/${locale}/search`}
+            aria-label={locale === "ar" ? "بحث" : "Search"}
             className="hidden h-11 w-11 items-center justify-center rounded-full bg-gold text-ink transition-colors hover:bg-gold-light sm:inline-flex"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="11" cy="11" r="7" />
               <path d="m20 20-3.5-3.5" strokeLinecap="round" />
             </svg>
-          </button>
+          </Link>
 
           <button
             type="button"
@@ -143,6 +143,15 @@ export function Navbar({
                 </Link>
               </li>
             ))}
+            <li>
+              <Link
+                href={`/${locale}/search`}
+                onClick={() => setOpen(false)}
+                className="block rounded-lg px-3 py-2.5 text-sm font-medium text-white/85"
+              >
+                {locale === "ar" ? "بحث" : "Search"}
+              </Link>
+            </li>
             <li>
               <Link
                 href={switchedPath}

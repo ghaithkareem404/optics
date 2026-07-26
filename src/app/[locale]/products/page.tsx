@@ -5,7 +5,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { products } from "@/data/products";
 import { PageHeader } from "@/components/PageHeader";
 import { ProductsGrid } from "@/components/ProductsGrid";
-import { BrandGalleries } from "@/components/BrandGalleries";
+import { CategoryGallery } from "@/components/CategoryGallery";
 import { Container } from "@/components/ui";
 
 // Always render fresh so newly uploaded model images appear immediately.
@@ -38,9 +38,9 @@ export default async function ProductsPage({ params }: { params: { locale: strin
           />
         </Container>
       </section>
-      <BrandGalleries
+      <CategoryGallery
         locale={params.locale}
-        title={params.locale === "ar" ? "أحدث الموديلات حسب البراند" : "Latest models by brand"}
+        title={params.locale === "ar" ? "أحدث الموديلات" : "Latest models"}
       />
     </>
   );

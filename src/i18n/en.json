@@ -68,6 +68,17 @@
       "accessories": "Accessories"
     }
   },
+  "search": {
+    "title": "Search",
+    "subtitle": "Type a model, brand or folder name to see matching images",
+    "placeholder": "Search by image or brand name…",
+    "empty": "No matching results.",
+    "prompt": "Start typing to see results.",
+    "results": "results"
+  },
+  "gallery": {
+    "empty": "No images in this section yet."
+  },
   "about": {
     "title": "Z&O Optics Center",
     "subtitle": "Medical precision & modern elegance in one place",
