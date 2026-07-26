@@ -1,18 +1,20 @@
 import "server-only";
 import crypto from "crypto";
 import { put, del, get } from "@vercel/blob";
+import { isCategory } from "@/data/categories";
 
 export interface Collection {
   id: string;
-  brandId: string;
+  /** One of the top-level category ids (optical, contact-lenses, brands, accessories). */
+  categoryId: string;
   name: string;
   createdAt: number;
 }
 
 export interface ModelItem {
   id: string;
-  brandId: string;
-  /** The sub-collection this image belongs to (empty for legacy items). */
+  categoryId: string;
+  /** The sub-folder this image belongs to (empty for legacy items). */
   collectionId: string;
   name: string;
   /** Blob pathname; images are served publicly through /api/media/<pathname>. */
@@ -28,6 +30,14 @@ export interface Catalog {
 
 const MANIFEST_PATH = "catalog/manifest.json";
 
+/** Normalize a stored record: accept the legacy `brandId` field and make sure
+ *  every item lands under a valid category (legacy brand uploads → "brands"). */
+function normalizeCategory(raw: unknown): string {
+  const r = raw as { categoryId?: string; brandId?: string };
+  const id = r.categoryId ?? r.brandId ?? "";
+  return isCategory(id) ? id : "brands";
+}
+
 /** Read the catalog manifest from the (private) Blob store. Returns an empty
  *  catalog on any error so the public site never breaks. */
 export async function getCatalog(): Promise<Catalog> {
@@ -36,10 +46,14 @@ export async function getCatalog(): Promise<Catalog> {
     if (!result || !result.stream) return { collections: [], models: [] };
     const text = await new Response(result.stream).text();
     const data = JSON.parse(text) as Partial<Catalog>;
-    return {
-      collections: Array.isArray(data.collections) ? data.collections : [],
-      models: Array.isArray(data.models) ? data.models : [],
-    };
+    const collections = (Array.isArray(data.collections) ? data.collections : []).map(
+      (c) => ({ ...c, categoryId: normalizeCategory(c) }),
+    );
+    const models = (Array.isArray(data.models) ? data.models : []).map((m) => ({
+      ...m,
+      categoryId: normalizeCategory(m),
+    }));
+    return { collections, models };
   } catch {
     return { collections: [], models: [] };
   }
@@ -56,8 +70,8 @@ async function saveCatalog(catalog: Catalog): Promise<void> {
 
 /* ----------------------------- collections ----------------------------- */
 
-export async function addCollection(brandId: string, name: string): Promise<Collection> {
-  const col: Collection = { id: crypto.randomUUID(), brandId, name, createdAt: Date.now() };
+export async function addCollection(categoryId: string, name: string): Promise<Collection> {
+  const col: Collection = { id: crypto.randomUUID(), categoryId, name, createdAt: Date.now() };
   const catalog = await getCatalog();
   catalog.collections.unshift(col);
   await saveCatalog(catalog);
@@ -95,19 +109,19 @@ export async function deleteCollection(id: string): Promise<boolean> {
 /* ------------------------------- models -------------------------------- */
 
 export async function addModel(input: {
-  brandId: string;
+  categoryId: string;
   collectionId: string;
   name: string;
   file: File;
 }): Promise<ModelItem> {
   const safeName = input.file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-  const blob = await put(`models/${input.brandId}/${safeName}`, input.file, {
+  const blob = await put(`models/${input.categoryId}/${safeName}`, input.file, {
     access: "private",
     addRandomSuffix: true,
   });
   const item: ModelItem = {
     id: crypto.randomUUID(),
-    brandId: input.brandId,
+    categoryId: input.categoryId,
     collectionId: input.collectionId,
     name: input.name || "",
     pathname: blob.pathname,
